@@ -1,5 +1,5 @@
 # GameJam Color project (18 - 19 febr.)
-### by [Mattéo Leclercq](https://github.com/MatteoL-W/) and [Yaëlle Saralegui-Tran](https://github.com/yaelleainhoa) 
+### by [Yaëlle Saralegui-Tran](https://github.com/yaelleainhoa) and [Mattéo Leclercq](https://github.com/MatteoL-W/)
 
 ## Game
 
