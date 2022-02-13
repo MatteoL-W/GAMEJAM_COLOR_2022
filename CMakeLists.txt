@@ -23,8 +23,11 @@ if (WIN32)
 # On linux
 else()
     find_package(SDL2 REQUIRED)
-    find_package(SDL2_image REQUIRED)
-    find_package(SDL2_ttf REQUIRED)
+    find_package(SDL_image REQUIRED)
+    find_package(SDL_ttf REQUIRED)
+    # If doesnt work, try this
+    # find_package(SDL2_image REQUIRED)
+    # find_package(SDL2_ttf REQUIRED)
 endif()
 
 # can be cleaner with : https://github.com/aminosbh/sdl2-cmake-modules
@@ -54,7 +57,7 @@ target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES} ${SDL2IMAGE_LIBRARIES} $
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 if (UNIX)
-    target_link_libraries(${PROJECT_NAME} -ldl)
+    target_link_libraries(${PROJECT_NAME} -ldl -lSDL2 -lSDL2_image -lSDL2_ttf)
 endif()
 
 if (WIN32) # Copy .dll to build folder
