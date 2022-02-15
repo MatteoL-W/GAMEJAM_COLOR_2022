@@ -6,7 +6,8 @@
 
 class MenuInterface : public Interface {
 public:
-    MenuInterface(Game *game) {
+    MenuInterface(Game* game)
+    {
         MenuInterface::game = game;
         MenuInterface::menu = new Menu();
     }
@@ -20,9 +21,7 @@ public:
     void render() override;
 
 private:
-    Game *game;
+    Game* game;
 
-    Menu *menu;
-
+    Menu* menu;
 };
-

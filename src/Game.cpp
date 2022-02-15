@@ -1,18 +1,18 @@
+#include "../include/Game.hpp"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
-
-#include "../include/Game.hpp"
 #include "../include/interfaces/MenuInterface.hpp"
 
-SDL_Renderer *Game::renderer = nullptr;
+SDL_Renderer* Game::renderer = nullptr;
 
-MenuInterface *menuInterface = nullptr;
+MenuInterface* menuInterface = nullptr;
 
 /**
  * @brief Initialize the game (assign the window, renderer, define the game as running)
  */
-Game::Game() {
+Game::Game()
+{
     /* Vérifications */
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         std::cout << "SDL_INIT HAS FAILED. SDL_ERROR: " << SDL_GetError() << std::endl;
@@ -30,7 +30,7 @@ Game::Game() {
     }
 
     /* Create SDL needs */
-    window = SDL_CreateWindow("Change the name", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH,
+    window   = SDL_CreateWindow("Change the name", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH,
                               WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, 0);
 
@@ -48,7 +48,8 @@ Game::~Game() = default;
 /**
  * @brief Quit the game properly
  */
-void Game::clean() {
+void Game::clean()
+{
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
@@ -57,7 +58,8 @@ void Game::clean() {
 /**
  * @brief Refresh the game and chose the right interface
  */
-void Game::refresh() {
+void Game::refresh()
+{
     currentInterface->handleEvents();
     currentInterface->update();
     currentInterface->render();

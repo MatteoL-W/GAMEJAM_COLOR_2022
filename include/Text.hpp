@@ -27,24 +27,34 @@ public:
 
     std::string getText() { return message; };
 
+    int getX() const { return x; };
+
+    void setX(const int newX) { x = newX; };
+
+    int getY() const { return y; };
+
+    void setY(const int newY) { y = newY; };
+
 private:
     std::string message;
 
-    TTF_Font *font;
+    TTF_Font* font;
 
-    SDL_Surface *surface;
+    SDL_Surface* surface;
 
     SDL_Color color;
 
-    SDL_Texture *texture;
+    SDL_Texture* texture;
 
     SDL_Rect destRect;
 
     int size = 24;
+
+    int x = 0;
+
+    int y = 0;
 };
 
-TTF_Font *createFont(Text *text, std::string fontName);
+TTF_Font* createFont(Text* text, std::string fontName);
 
-SDL_Rect createDestRect(TTF_Font *font, std::string text, int x, int y);
-
-
+SDL_Rect createDestRect(TTF_Font* font, std::string text, int x, int y);

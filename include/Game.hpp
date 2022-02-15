@@ -1,8 +1,7 @@
 #pragma once
 
-#include <iostream>
 #include <SDL2/SDL.h>
-
+#include <iostream>
 #include "Interface.hpp"
 
 class Game {
@@ -15,24 +14,26 @@ public:
 
     void refresh();
 
-    SDL_Event event;
-
     static const int WINDOW_WIDTH = 750;
 
     static const int WINDOW_HEIGHT = 750;
 
-    static SDL_Renderer *renderer;
+    static SDL_Renderer* renderer;
 
     void setRunning(bool newState) { isRunning = newState; }
 
-    bool running() { return isRunning; };
+    bool running() const { return isRunning; };
 
-    Interface *getCurrentInterface() { return currentInterface; };
+    Interface* getCurrentInterface() { return currentInterface; };
+
+    SDL_Event getEvent() const { return event; };
 
 private:
-    SDL_Window *window;
+    SDL_Window* window;
 
     bool isRunning = false;
 
-    Interface *currentInterface;
+    Interface* currentInterface;
+
+    SDL_Event event;
 };
