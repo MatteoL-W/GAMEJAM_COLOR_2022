@@ -21,7 +21,7 @@ public:
 
     void changeFont(std::string name, int size);
 
-    int getSize() { return size; };
+    int getSize() const { return size; };
 
     SDL_Rect getDestRect() { return destRect; };
 

@@ -1,11 +1,11 @@
-#include <SDL2/SDL.h>
-
 #include "../include/Main.hpp"
+#include <SDL2/SDL.h>
 #include "../include/Game.hpp"
 
-Game *game = nullptr;
+Game* game = nullptr;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     game = new Game();
 
     while (game->running()) {

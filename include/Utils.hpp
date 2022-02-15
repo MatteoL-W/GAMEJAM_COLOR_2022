@@ -6,6 +6,7 @@
  * @param textWidth
  * @return
  */
-int getPadding(int blockWidth, int textWidth) {
+int getPadding(int blockWidth, int textWidth)
+{
     return (blockWidth - textWidth) / 2;
 }

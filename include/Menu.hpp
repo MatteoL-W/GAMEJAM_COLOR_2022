@@ -13,5 +13,5 @@ public:
     void draw();
 
 private:
-    Text *titleText;
+    Text* titleText;
 };
