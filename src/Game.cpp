@@ -3,10 +3,12 @@
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include "../include/interfaces/MenuInterface.hpp"
+#include "../include/interfaces/FieldInterface.hpp"
 
 SDL_Renderer* Game::renderer = nullptr;
 
 MenuInterface* menuInterface = nullptr;
+FieldInterface* fieldInterface = nullptr;
 
 /**
  * @brief Initialize the game (assign the window, renderer, define the game as running)
@@ -36,9 +38,10 @@ Game::Game()
 
     /* Define the interfaces */
     menuInterface = new MenuInterface(this);
+    fieldInterface = new FieldInterface(this);
 
     /* Define the default interface*/
-    currentInterface = menuInterface;
+    currentInterface = fieldInterface;
 
     isRunning = true;
 }
