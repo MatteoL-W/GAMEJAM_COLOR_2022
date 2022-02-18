@@ -1,6 +1,7 @@
 #include "../include/Main.hpp"
 #include <SDL2/SDL.h>
 #include "../include/Game.hpp"
+#include "../include/Geometry.hpp"
 #include "../include/Random.hpp"
 
 Game* game = nullptr;
@@ -20,5 +21,6 @@ int main(int argc, char* argv[])
             SDL_Delay(FRAME_DELAY - frameTime);
         }
     }
+
     return 1;
 }
