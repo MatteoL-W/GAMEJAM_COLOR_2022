@@ -14,7 +14,7 @@ public:
 
     void refresh();
 
-    static const int WINDOW_WIDTH = 750;
+    static const int WINDOW_WIDTH = 1350;
 
     static const int WINDOW_HEIGHT = 750;
 
