@@ -6,10 +6,6 @@
 #include "../include/Player.hpp"
 #include "../include/Random.hpp"
 
-std::vector<Player*>  players;
-std::vector<Point2D*> fieldLimits;
-Ball*                 ball;
-
 const int xPadding = 58;
 const int yPadding = 42;
 
@@ -59,7 +55,7 @@ void Field::loadAndInitialize()
 void Field::loadPlayersPattern()
 {
     for (int i = 0; i < 8; i++) {
-        int radius = players[i]->getRadius();
+        std::cout << players int radius = players[i]->getRadius();
         if (i < 4) {
             players[i]->setPosition(Point2D(
                 randomUniformDistribution(

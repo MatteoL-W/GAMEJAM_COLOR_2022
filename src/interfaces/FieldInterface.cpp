@@ -15,7 +15,7 @@ void FieldInterface::handleEvents()
         break;
 
     case SDL_MOUSEBUTTONUP:
-        printf("clic en (%d, %d)\n", event.button.x, event.button.y);
+        field->setPositionClick(event.button.x, event.button.y);
         break;
     }
 }
