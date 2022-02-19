@@ -39,3 +39,5 @@ float   dot(Point2D vector1, Point2D vector2);
 float   norm(Point2D vector);
 Point2D normalize(Point2D vector);
 Point2D vectorFromPoints(Point2D const& vector1, Point2D const& vector2);
+
+bool intersectCircle(Point2D circleOrigin, float radius, Point2D position, Point2D direction, Point2D& intersection);

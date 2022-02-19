@@ -72,3 +72,22 @@ Point2D Point2D::getDirection(Point2D position) const
     direction = normalize(vectorFromPoints(*this, position));
     return direction;
 }
+
+bool intersectCircle(Point2D circleOrigin, float radius, Point2D position, Point2D direction, Point2D& intersection)
+{
+    float   a  = circleOrigin.getX();
+    float   b  = circleOrigin.getY();
+    float   r  = radius;
+    Point2D p1 = position;
+    Point2D p2 = position + direction;
+    float   m  = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+    float   c  = p1.getY() - p1.getX() * m;
+
+    float A = 1 + m * m;
+    float B = 2 * (m * c - b * m - a);
+    float C = a * a + c * c + b * b - 2 * b * c - r * r;
+
+    float delta = B * B - 4 * A * C;
+    std::cout << "delta ?? : " << delta << std::endl;
+    return true;
+}
