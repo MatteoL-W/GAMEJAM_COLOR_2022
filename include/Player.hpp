@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Geometry.hpp"
 #include "DynamicObject.hpp"
+#include "Geometry.hpp"
 
 class Player : public DynamicObject {
 public:
-    Player(float radius, int team) : DynamicObject(radius), collision(false), team(team)
+    Player(float radius, int team)
+        : DynamicObject(radius), collision(false), team(team)
     {
     }
 

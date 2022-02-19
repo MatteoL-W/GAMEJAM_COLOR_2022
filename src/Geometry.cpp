@@ -17,6 +17,11 @@ Point2D Point2D::operator+(const Point2D& point) const
     return sum;
 }
 
+bool Point2D::operator==(const Point2D& p) const
+{
+    return (std::abs(x - p.getX()) < epsilon) && (std::abs(y - p.getY()) < epsilon);
+}
+
 Point2D Point2D::operator-() const
 {
     Point2D opposite(-x, -y);
@@ -234,7 +239,7 @@ int intersectLine(const Point2D& position, const Point2D& direction, Point2D a, 
     float n = (b.getY() - a.getY()) / (b.getX() - a.getX());
     float q = a.getY() - a.getX() * n;
 
-    if (std::abs(n - m) < 0.0001) {
+    if (std::abs(n - m) < epsilon) {
         return 0;
     }
     float   x = (p - q) / (n - m);
