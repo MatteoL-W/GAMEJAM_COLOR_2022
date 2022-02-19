@@ -11,6 +11,9 @@ Field::Field()
     loadAndInitialize();
 }
 
+/**
+ * @brief Load assets and objects
+ */
 void Field::loadAndInitialize()
 {
     teamOnePlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/1_player.png");
@@ -39,6 +42,9 @@ void Field::draw()
     drawPlayers();
 }
 
+/**
+ * @brief Draw the players
+ */
 void Field::drawPlayers()
 {
     SDL_Texture* tempTexture = nullptr;

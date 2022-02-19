@@ -33,7 +33,7 @@ Game::Game()
 
     /* Create SDL needs */
     window   = SDL_CreateWindow("Change the name", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH,
-                                WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+                                WINDOW_HEIGHT, SDL_WINDOW_FULLSCREEN_DESKTOP);
     renderer = SDL_CreateRenderer(window, -1, 0);
 
     /* Define the interfaces */

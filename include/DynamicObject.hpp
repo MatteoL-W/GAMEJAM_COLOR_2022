@@ -14,20 +14,37 @@ public:
 
     ~DynamicObject() = default;
 
+    /**
+     * @brief Move the dynamic object depending on the arrival position
+     * @param position
+     */
     void move(Point2D position)
     {
         // TODO: move function
     }
 
-    static void draw(SDL_Texture* texture, SDL_Rect srcRect, SDL_Rect dstRect)
-    {
+    /**
+     * @brief Draw the dynamic object
+     * @param texture
+     * @param srcRect
+     * @param dstRect
+     */
+    static void draw(SDL_Texture* texture, SDL_Rect srcRect, SDL_Rect dstRect) {
         SDL_RenderCopy(Game::renderer, texture, &srcRect, &dstRect);
     }
 
-    virtual void intersect(Point2D position) = 0;
+    virtual void shot(Point2D position) = 0;
 
+    /**
+     * @brief Change the position to a new position
+     * @param newPosition
+     */
     void changePosition(Point2D newPosition) { position = newPosition; };
 
+    /**
+     * @brief Change the speed
+     * @param newSpeed
+     */
     void changeSpeed(float newSpeed) { speed = newSpeed; };
 
     Point2D getPosition() const { return position; };
