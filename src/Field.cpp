@@ -82,10 +82,10 @@ void Field::drawPlayers()
 void Field::loadPlayersPattern()
 {
     for (int i = 0; i < 8; i++) {
-        if (i / 4 == 0) {
-            players[i]->setPosition(Point2D(
-                randomUniformDistribution(xPadding, Game::WINDOW_WIDTH / 2),
-                ((Game::WINDOW_HEIGHT - yPadding * 2) / 4.) * (i+1)));
-        }
+        int team = i / 4;
+
+        players[i]->setPosition(Point2D(
+            randomUniformDistribution(xPadding, Game::WINDOW_WIDTH / 2 - xPadding) + (Game::WINDOW_WIDTH / 2 - xPadding) * team,
+            yPadding + (i % 4) * (Game::WINDOW_HEIGHT / 4) ));
     }
 }

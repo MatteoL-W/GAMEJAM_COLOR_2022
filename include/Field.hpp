@@ -18,7 +18,7 @@ public:
 
     void drawPlayers();
 
-    void loadPlayersPattern();
+    static void loadPlayersPattern();
 
 private:
     SDL_Texture* teamOnePlayersTexture, *teamTwoPlayersTexture, *fieldTexture;
