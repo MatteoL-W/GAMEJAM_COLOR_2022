@@ -1,14 +1,7 @@
 #include "../include/Field.hpp"
 #include <SDL2/SDL_image.h>
-#include <vector>
-#include "../include/Ball.hpp"
 #include "../include/Game.hpp"
-#include "../include/Player.hpp"
 #include "../include/Random.hpp"
-
-std::vector<Player*>  players;
-std::vector<Point2D*> fieldLimits;
-Ball*                 ball;
 
 const int xPadding = 58;
 const int yPadding = 42;
