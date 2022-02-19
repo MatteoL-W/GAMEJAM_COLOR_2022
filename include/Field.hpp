@@ -55,7 +55,11 @@ public:
 
     Ball* getBall() const { return ball; };
 
-    Player* getPlayerAt(int i) const { return players[i]; };
+    Player getPlayerAt(int i) const { return *(players[i]); };
+
+    void intersectBallOfPlayer(int i, const Point2D& positionClick) { players[i]->intersectBall(positionClick, *ball, players, fieldLimits, intersection); };
+
+    void shootOfPlayer(int i, Point2D const& direction) { players[i]->shoot(*ball, players, fieldLimits, intersection, direction); };
 
     //bouh cracra mais tmp
     Point2D intersection;

@@ -1,14 +1,5 @@
 #include "../include/Player.hpp"
 
-/**
- * @brief Anticipate the player behaviour (is he intersecting something and moving)
- * @param position
- */
-void Player::shot(Point2D position)
-{
-    // TODO: intersection function
-}
-
 bool Player::intersectBall(const Point2D& positionClick, const Ball& ball, std::vector<Player*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection)
 {
     std::vector<DynamicObject*> playersDynamic;
@@ -23,12 +14,39 @@ bool Player::intersectBall(const Point2D& positionClick, const Ball& ball, std::
         float nearestDistance = this->getPosition().getDistance(intersection);
         if (distanceBall < nearestDistance) {
             intersection = tmpIntersection;
-            intersection.print();
             return true;
         }
     }
-    intersection.print();
     return false;
+}
+
+/**
+ * @brief Anticipate the player behaviour (is he intersecting something and moving)
+ * 
+ * @param positionClick 
+ * @param ball 
+ * @param players 
+ * @param fieldLimits 
+ * @param intersection 
+ */
+void Player::shoot(const Ball& ball, std::vector<Player*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection, Point2D direction)
+{
+    //if (!intersectBall(positionClick, ball, players, fieldLimits, intersection)) {
+    float distance = this->getPosition().getDistance(intersection);
+    if (this->getSpeed() > 0 && std::abs(distance - this->getRadius()) > 30) {
+        //intersection.print();
+        direction.print();
+        this->move(this->getPosition() + direction * this->getSpeed());
+    }
+    //}
+    // else {
+    //     float   distance  = this->getPosition().getDistance(intersection);
+    //     Point2D direction = this->getPosition().getDirection(positionClick);
+    //     if (this->getSpeed() > 0 && std::abs(distance - this->getRadius()) > 30) {
+    //         this->move(this->getPosition() + direction * this->getSpeed());
+    //     }
+    // }
+    // this->getPosition().print();
 }
 
 /* Pour plus tard:

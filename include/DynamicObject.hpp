@@ -5,25 +5,18 @@
 #include "Game.hpp"
 #include "Geometry.hpp"
 
+const float DECELERATION_FACTOR = 0.90;
+
 class DynamicObject {
 public:
     explicit DynamicObject(float radius)
-        : position(Point2D(0, 0)), radius(radius), speed(0)
+        : position(Point2D(0, 0)), radius(radius), speed(50)
     {
     }
 
     ~DynamicObject() = default;
 
-    /**
-     * @brief Move the dynamic object depending on the arrival position
-     * @param position
-     */
-    void move(Point2D position)
-    {
-        // TODO: move function
-    }
-
-    virtual void shot(Point2D position) = 0;
+    void decelerate() { speed = speed * DECELERATION_FACTOR; };
 
     /**
      * @brief Change the position to a new position
@@ -37,6 +30,16 @@ public:
      */
     void changeSpeed(float newSpeed) { speed = newSpeed; };
 
+    /**
+     * @brief Move the dynamic object depending on the arrival position
+     * @param position
+     */
+    void move(Point2D newPosition)
+    {
+        this->position = newPosition;
+        decelerate();
+    }
+
     void setPosition(Point2D newPosition) { position = newPosition; };
 
     Point2D getPosition() const { return position; };
@@ -46,6 +49,8 @@ public:
     float getXOnDraw() const { return getPosition().getX() - getRadius(); };
 
     float getYOnDraw() const { return getPosition().getY() - getRadius(); };
+
+    float getSpeed() const { return speed; };
 
 private:
     Point2D position;

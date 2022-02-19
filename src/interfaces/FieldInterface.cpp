@@ -1,6 +1,9 @@
 #include "../../include/interfaces/FieldInterface.hpp"
 #include <SDL2/SDL.h>
 
+bool    clicked = false;
+Point2D direction(0, 0);
+
 /**
  * @brief Handle SDL Events in the menu
  */
@@ -16,9 +19,15 @@ void FieldInterface::handleEvents()
 
     case SDL_MOUSEBUTTONUP:
         field->setPositionClick(event.button.x, event.button.y);
-        field->getPlayerAt(5)->intersectBall(field->getPositionClick(), *(field->getBall()), field->getPlayers(),
-                                             field->getFieldLimits(), field->intersection);
+        field->intersectBallOfPlayer(0, field->getPositionClick());
+        Point2D click = field->getPositionClick();
+        direction     = field->getPlayerAt(0).getPosition().getDirection(click);
+        clicked       = true;
         break;
+    }
+
+    if (clicked) {
+        field->shootOfPlayer(0, direction);
     }
 }
 
