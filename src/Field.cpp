@@ -1,6 +1,6 @@
 #include "../include/Field.hpp"
 #include <SDL2/SDL_image.h>
-#include <math.h>
+#include <cmath>
 #include "../include/Random.hpp"
 #include "../include/Utils.hpp"
 #include "../include/variables/Color.hpp"
@@ -224,21 +224,24 @@ void Field::drawOverlay()
     rightTeamScoreText->draw();
     leftTeamScoreText->draw();
 }
-int  angle = 0;
+
 void Field::drawArrow()
 {
-    int radius = focusOn->getRadius();
+    int     radius    = focusOn->getRadius();
     Point2D playerPos = focusOn->getPosition();
 
     SDL_RendererFlip arrowFlip = SDL_FLIP_NONE;
     SDL_Point        playerPoint;
-    (angle++) % 360;
 
-    float distance = playerPos.getDistance(positionMouse);
-    dstArrow.w     = (distance > 150) ? 150 : distance;
-    dstArrow.h     = 20;
-    dstArrow.x     = playerPos.getX() - radius/2 - dstArrow.w / 2;
-    dstArrow.y     = playerPos.getY() - dstArrow.h / 2;
+    float distance         = playerPos.getDistance(positionMouse);
+    float heightDifference = positionMouse.getY() - playerPos.getY();
+    int   angle            = std::atan(heightDifference / distance) * (180 / M_PI);
+    std::cout << angle << std::endl;
+
+    dstArrow.w = (distance > 150) ? 150 : distance;
+    dstArrow.h = 20;
+    dstArrow.x = playerPos.getX() - radius / 2 - dstArrow.w / 2;
+    dstArrow.y = playerPos.getY() - dstArrow.h / 2;
 
     playerPoint.x = dstArrow.w / 2;
     playerPoint.y = dstArrow.h / 2;
