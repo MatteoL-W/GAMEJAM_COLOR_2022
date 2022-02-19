@@ -30,6 +30,7 @@ void Field::loadAndInitialize()
     teamTwoPlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/2_player.png");
 
     srcPlayers.w = srcPlayers.h = PLAYERS_DIMENSIONS;
+    srcPlayers.x = srcPlayers.y = 0;
     dstPlayers.w = dstPlayers.h = PLAYERS_DIMENSIONS;
     dstBall.w = dstBall.h = BALL_RADIUS;
 
@@ -63,18 +64,15 @@ void Field::loadPlayersPattern()
             players[i]->setPosition(Point2D(
                 randomUniformDistribution(
                     xPadding + radius,
-                    Game::WINDOW_WIDTH / 2 - 110
-                    ),
+                    Game::WINDOW_WIDTH / 2 - 110),
                 (yPadding + radius + 20) + i * (Game::WINDOW_HEIGHT / 4)));
         }
         else {
             players[i]->setPosition(Point2D(
                 randomUniformDistribution(
                     xPadding + radius + Game::WINDOW_WIDTH / 2,
-                    Game::WINDOW_WIDTH - xPadding
-                    ),
+                    Game::WINDOW_WIDTH - xPadding),
                 (yPadding + radius + 20) + (i % 4) * (Game::WINDOW_HEIGHT / 4)));
-            std::cout << players[i]->getPosition().getY() << " ";
         }
     }
 }
@@ -116,7 +114,7 @@ void Field::drawPlayers()
         dstPlayers.x = player->getXOnDraw();
         dstPlayers.y = player->getYOnDraw();
         tempTexture  = (player->getTeam() == 0) ? teamOnePlayersTexture : teamTwoPlayersTexture;
-        player->draw(tempTexture, srcPlayers, dstPlayers);
+        SDL_RenderCopy(Game::renderer, tempTexture, &srcPlayers, &dstPlayers);
     }
 }
 
