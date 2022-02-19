@@ -42,15 +42,29 @@ Point2D Point2D::operator/(const float& a) const
     return multiply;
 }
 
+/**
+ * @brief Returns scalar product
+ * @param vector1
+ * @param vector2
+ */
 float dot(Point2D vector1, Point2D vector2)
 {
     return sqrt(vector1.getX() * vector2.getX() + vector1.getY() * vector1.getY());
 }
 
+/**
+ * @brief Returns norm of vector
+ * @param vector
+ */
 float norm(Point2D vector)
 {
     return dot(vector, vector);
 }
+
+/**
+ * @brief Returns the normalized version of a vector without changing it
+ * @param vector
+ */
 
 Point2D normalize(Point2D vector)
 {
@@ -59,13 +73,22 @@ Point2D normalize(Point2D vector)
     return normal;
 }
 
-Point2D vectorFromPoints(Point2D const& vector1, Point2D const& vector2)
+/**
+ * @brief Returns a vector created from 2 points
+ * @param point1
+ * @param point2
+ */
+Point2D vectorFromPoints(Point2D const& point1, Point2D const& point2)
 {
     Point2D vector;
-    vector = vector2 - vector1;
+    vector = point2 - point1;
     return vector;
 }
 
+/**
+ * @brief Returns the direction of the point pointing at a position
+ * @param position
+ */
 Point2D Point2D::getDirection(Point2D position) const
 {
     Point2D direction;
@@ -73,6 +96,11 @@ Point2D Point2D::getDirection(Point2D position) const
     return direction;
 }
 
+/**
+ * @brief Returns the direction of the point pointing at a position (x,y)
+ * @param x
+ * @param y
+ */
 Point2D Point2D::getDirection(const float x, const float y) const
 {
     Point2D direction;
@@ -81,21 +109,34 @@ Point2D Point2D::getDirection(const float x, const float y) const
     return direction;
 }
 
+/**
+ * @brief Returns the distance between the point and another point
+ * @param point
+ */
 float Point2D::getDistance(Point2D point) const
 {
     return sqrt((point.getX() - x) * (point.getX() - x) + (point.getY() - y) * (point.getY() - y));
 }
+
+/**
+ * @brief Returns the distance between the point and another point (x,y)
+ * @param x
+ * @param y
+ */
 float Point2D::getDistance(float xPoint, float yPoint) const
 {
     Point2D point(xPoint, yPoint);
     return sqrt((point.getX() - x) * (point.getX() - x) + (point.getY() - y) * (point.getY() - y));
 }
 
-float scalarProduct(const Point2D& p1, const Point2D& p2)
-{
-    return p1.getX() * p2.getX() + p1.getY() * p2.getY();
-}
-
+/**
+ * @brief Solves a*x²+b*x+c = 0 and gives the (x0,x1) results
+ * @param a
+ * @param b
+ * @param c
+ * @param x0
+ * @param x1
+ */
 int solveQuadratic(const float a, const float b, const float c, float* x0, float* x1)
 {
     float delta = b * b - 4 * a * c;
@@ -112,17 +153,35 @@ int solveQuadratic(const float a, const float b, const float c, float* x0, float
     return 1;
 }
 
+/**
+ * @brief When there is an intersection between a line and an object, checks if 
+ * the vector is pointing at the intersection 
+ * Returns true if is looking, false if the intersection is behind
+ * @param position
+ * @param direction
+ * @param intersection
+ */
 int isLooking(const Point2D& position, const Point2D& direction, const Point2D& intersection)
 {
     Point2D lookAt             = vectorFromPoints(position, position + direction);
     Point2D lookAtIntersection = vectorFromPoints(position, intersection);
 
-    if (scalarProduct(lookAt, lookAtIntersection) < 0) {
+    if (dot(lookAt, lookAtIntersection) < 0) {
         return 0;
     }
     return 1;
 }
 
+/**
+ * @brief Returns true if intersect and give intersection the value of the intersection
+ * 
+ * @param circleOrigin 
+ * @param radius 
+ * @param position 
+ * @param direction 
+ * @param intersection 
+ * @return int 
+ */
 int intersectCircle(const Point2D& circleOrigin, float radius, const Point2D& position, const Point2D& direction, Point2D& intersection)
 {
     float   x0, x1;
@@ -155,6 +214,16 @@ int intersectCircle(const Point2D& circleOrigin, float radius, const Point2D& po
     return 1;
 }
 
+/**
+ * @brief Returns true if intersection and set intersection value
+ * 
+ * @param position 
+ * @param direction 
+ * @param a 
+ * @param b 
+ * @param intersection 
+ * @return int 
+ */
 int intersectLine(const Point2D& position, const Point2D& direction, Point2D a, Point2D b, Point2D& intersection)
 {
     Point2D p1 = position;
@@ -178,6 +247,16 @@ int intersectLine(const Point2D& position, const Point2D& direction, Point2D a, 
     return 1;
 }
 
+/**
+ * @brief Returns true if intersect the segment
+ * 
+ * @param position 
+ * @param direction 
+ * @param a 
+ * @param b 
+ * @param intersection 
+ * @return int 
+ */
 int intersectSegment(const Point2D& position, const Point2D& direction, Point2D a, Point2D b, Point2D& intersection)
 {
     if (!intersectLine(position, direction, a, b, intersection)) {
@@ -186,7 +265,7 @@ int intersectSegment(const Point2D& position, const Point2D& direction, Point2D 
     Point2D vectorA = vectorFromPoints(intersection, a);
     Point2D vectorB = vectorFromPoints(intersection, b);
 
-    if (scalarProduct(vectorA, vectorB) > 0) {
+    if (dot(vectorA, vectorB) > 0) {
         return 0;
     }
     return 1;
