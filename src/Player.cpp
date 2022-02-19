@@ -21,10 +21,11 @@ bool Player::intersectBall(const Point2D& positionClick, const Ball& ball, std::
         float distanceBall    = this->getPosition().getDistance(tmpIntersection);
         float nearestDistance = this->getPosition().getDistance(intersection);
         if (distanceBall < nearestDistance) {
-            intersection = tmpIntersection;
+            intersection.print();
             return true;
         }
     }
+    intersection.print();
     return false;
 }
 

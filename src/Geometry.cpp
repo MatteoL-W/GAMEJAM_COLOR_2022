@@ -252,6 +252,7 @@ int intersectLine(const Point2D& position, const Point2D& direction, Point2D a, 
     //cas 2, vertical, cad a et b même x et d'équation x=a.getX();, c'est forcément le cas on a que des seg horizontaux ou verticaux
     else {
         if (std::abs(p1.getX() - p2.getX()) < epsilon) {
+            std::cout << std::abs(p1.getX() - p2.getX()) << std::endl;
             return 0;
         }
         float m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
@@ -283,10 +284,10 @@ int intersectSegment(const Point2D& position, const Point2D& direction, Point2D 
     if (!isLooking(position, direction, intersection)) {
         return 0;
     }
-    Point2D vectorA = vectorFromPoints(intersection, a);
-    Point2D vectorB = vectorFromPoints(intersection, b);
+    Point2D vectorAI = vectorFromPoints(a, intersection);
+    Point2D vectorAB = vectorFromPoints(a, b);
 
-    if (dot(vectorA, vectorB) > 0) {
+    if (dot(vectorAI, vectorAB) < 0) {
         return 0;
     }
     return 1;
