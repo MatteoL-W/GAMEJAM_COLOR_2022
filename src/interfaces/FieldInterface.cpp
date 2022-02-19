@@ -9,8 +9,14 @@ void FieldInterface::handleEvents()
     SDL_Event event = game->getEvent();
     SDL_PollEvent(&event);
 
-    if (event.type == SDL_QUIT) {
+    switch (event.type) {
+    case SDL_QUIT:
         game->setRunning(false);
+        break;
+
+    case SDL_MOUSEBUTTONUP:
+        printf("clic en (%d, %d)\n", event.button.x, event.button.y);
+        break;
     }
 }
 

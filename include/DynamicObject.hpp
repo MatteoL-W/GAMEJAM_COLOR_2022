@@ -23,17 +23,6 @@ public:
         // TODO: move function
     }
 
-    /**
-     * @brief Draw the dynamic object
-     * @param texture
-     * @param srcRect
-     * @param dstRect
-     */
-    static void draw(SDL_Texture* texture, SDL_Rect srcRect, SDL_Rect dstRect)
-    {
-        SDL_RenderCopy(Game::renderer, texture, &srcRect, &dstRect);
-    }
-
     virtual void shot(Point2D position) = 0;
 
     /**
