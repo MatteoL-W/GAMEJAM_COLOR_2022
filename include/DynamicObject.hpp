@@ -48,6 +48,8 @@ public:
 
     Point2D getPosition() { return position; };
 
+    void setPosition(Point2D newPosition) { position = newPosition; };
+
 private:
     Point2D position;
 

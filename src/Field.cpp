@@ -3,9 +3,13 @@
 #include <vector>
 #include "../include/Game.hpp"
 #include "../include/Player.hpp"
+#include "../include/Random.hpp"
 
-std::vector<Player*> players;
+std::vector<Player*>  players;
 std::vector<Point2D*> fieldLimits;
+
+const int xPadding = 58;
+const int yPadding = 42;
 
 Field::Field()
 {
@@ -18,7 +22,7 @@ Field::Field()
 void Field::loadAndInitialize()
 {
     // Initializing assets
-    fieldTexture = IMG_LoadTexture(Game::renderer, "assets/images/field.png");
+    fieldTexture          = IMG_LoadTexture(Game::renderer, "assets/images/field.png");
     teamOnePlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/1_player.png");
     teamTwoPlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/2_player.png");
 
@@ -27,9 +31,6 @@ void Field::loadAndInitialize()
 
     // Initializing vectors
     // set Limit Fields
-    const int xPadding = 58;
-    const int yPadding = 42;
-
     fieldLimits.push_back(new Point2D(xPadding, yPadding));
     fieldLimits.push_back(new Point2D(Game::WINDOW_WIDTH - xPadding, yPadding));
     fieldLimits.push_back(new Point2D(Game::WINDOW_WIDTH - xPadding, Game::WINDOW_HEIGHT - yPadding));
@@ -39,6 +40,8 @@ void Field::loadAndInitialize()
     for (int i = 0; i < 8; i++) {
         players.push_back(new Player(PLAYERS_DIMENSIONS / 2, i / 4));
     }
+
+    loadPlayersPattern();
 }
 
 /**
@@ -65,10 +68,24 @@ void Field::draw()
 void Field::drawPlayers()
 {
     SDL_Texture* tempTexture = nullptr;
-    for (auto & player : players) {
+    for (auto& player : players) {
         dstPlayers.x = player->getPosition().getX();
         dstPlayers.y = player->getPosition().getY();
-        tempTexture = (player->getTeam() == 0) ? teamOnePlayersTexture : teamTwoPlayersTexture;
+        tempTexture  = (player->getTeam() == 0) ? teamOnePlayersTexture : teamTwoPlayersTexture;
         player->draw(tempTexture, srcPlayers, dstPlayers);
+    }
+}
+
+/**
+ * @brief Place the players depending on pattern
+ */
+void Field::loadPlayersPattern()
+{
+    for (int i = 0; i < 8; i++) {
+        if (i / 4 == 0) {
+            players[i]->setPosition(Point2D(
+                randomUniformDistribution(xPadding, Game::WINDOW_WIDTH / 2),
+                ((Game::WINDOW_HEIGHT - yPadding * 2) / 4.) * (i+1)));
+        }
     }
 }
