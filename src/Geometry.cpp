@@ -73,8 +73,44 @@ Point2D Point2D::getDirection(Point2D position) const
     return direction;
 }
 
-bool intersectCircle(Point2D circleOrigin, float radius, Point2D position, Point2D direction, Point2D& intersection)
+Point2D Point2D::getDirection(const float x, const float y) const
 {
+    Point2D direction;
+    Point2D position(x, y);
+    direction = normalize(vectorFromPoints(*this, position));
+    return direction;
+}
+
+float Point2D::getDistance(Point2D point) const
+{
+    return sqrt((point.getX() - x) * (point.getX() - x) + (point.getY() - y) * (point.getY() - y));
+}
+float Point2D::getDistance(float xPoint, float yPoint) const
+{
+    Point2D point(xPoint, yPoint);
+    return sqrt((point.getX() - x) * (point.getX() - x) + (point.getY() - y) * (point.getY() - y));
+}
+
+int solveQuadratic(const float a, const float b, const float c, float* x0, float* x1)
+{
+    float delta = b * b - 4 * a * c;
+
+    if (delta < 0)
+        return 0;
+    else if (delta == 0)
+        *x0 = *x1 = -b / (2. * a);
+    else {
+        *x0 = (-b + sqrt(delta)) / (2. * a);
+        *x1 = (-b - sqrt(delta)) / (2. * a);
+    }
+
+    return 1;
+}
+
+int intersectCircle(Point2D circleOrigin, float radius, Point2D position, Point2D direction, Point2D& intersection)
+{
+    float   x0, x1;
+    float   y;
     float   a  = circleOrigin.getX();
     float   b  = circleOrigin.getY();
     float   r  = radius;
@@ -87,7 +123,15 @@ bool intersectCircle(Point2D circleOrigin, float radius, Point2D position, Point
     float B = 2 * (m * c - b * m - a);
     float C = a * a + c * c + b * b - 2 * b * c - r * r;
 
-    float delta = B * B - 4 * A * C;
-    std::cout << "delta ?? : " << delta << std::endl;
-    return true;
+    if (!solveQuadratic(A, B, C, &x0, &x1)) {
+        return 0;
+    }
+
+    if (position.getDistance(x0, m * x0 + c) > position.getDistance(x1, m * x1 + c)) {
+        x0 = x1;
+    }
+    y = m * x0 + c;
+    intersection.setPoint(x0, y);
+    intersection.print();
+    return 1;
 }
