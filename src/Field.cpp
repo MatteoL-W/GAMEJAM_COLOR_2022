@@ -2,6 +2,8 @@
 #include <SDL2/SDL_image.h>
 #include "../include/Game.hpp"
 #include "../include/Random.hpp"
+#include "../include/Utils.hpp"
+#include "../include/variables/Color.hpp"
 
 const int xPadding = 58;
 const int yPadding = 42;
@@ -22,6 +24,7 @@ void Field::loadAndInitialize()
     ballTexture    = IMG_LoadTexture(Game::renderer, "assets/images/ball.png");
     fieldTexture   = IMG_LoadTexture(Game::renderer, "assets/images/field.png");
     playersTexture = IMG_LoadTexture(Game::renderer, "assets/images/sprite_players.png");
+    playersFaceTexture = IMG_LoadTexture(Game::renderer, "assets/images/sprite_players_face.png");
 
     srcPlayers.w = SRC_PLAYERS_DIMENSIONS_W;
     srcPlayers.h = SRC_PLAYERS_DIMENSIONS_H;
@@ -35,6 +38,14 @@ void Field::loadAndInitialize()
     dstBall.w = dstBall.h = BALL_RADIUS;
 
     dstGoal.w = dstGoal.h = CONE_RADIUS;
+
+    overlayRect.w = 315;
+    overlayRect.h = 90;
+    overlayRect.x = getPadding(Game::WINDOW_WIDTH, 315);
+    overlayRect.y = Game::WINDOW_HEIGHT - 90;
+
+    dstFace.w = srcFace.w = PLAYERS_FACE_W;
+    dstFace.h = srcFace.h = PLAYERS_FACE_H;
 
     // initialize ball
     ball = new Ball(BALL_RADIUS / 2);
@@ -61,6 +72,14 @@ void Field::loadAndInitialize()
     tempGoal.first  = new Point2D(Game::WINDOW_WIDTH - xPadding, (Game::WINDOW_HEIGHT / 2) - goalGap);
     tempGoal.second = new Point2D(Game::WINDOW_WIDTH - xPadding, (Game::WINDOW_HEIGHT / 2) + goalGap);
     goals.push_back(tempGoal);
+
+    leftTeamScoreText = new Text();
+    leftTeamScoreText->create(std::to_string(leftTeamScore), WhiteColor, "Press");
+    leftTeamScoreText->changeDestRect(Game::WINDOW_WIDTH / 2 - 60, Game::WINDOW_HEIGHT - 50);
+
+    rightTeamScoreText = new Text();
+    rightTeamScoreText->create(std::to_string(rightTeamScore), WhiteColor, "Press");
+    rightTeamScoreText->changeDestRect(Game::WINDOW_WIDTH / 2 + 40, Game::WINDOW_HEIGHT - 50);
 
     loadPlayersPattern();
     resetBallPosition();
@@ -116,6 +135,8 @@ void Field::draw()
     drawPlayers();
     drawBall();
     drawGoals();
+
+    drawOverlay();
 }
 
 /**
@@ -152,4 +173,23 @@ void Field::drawGoals()
         dstGoal.y = goals[i].second->getY() - CONE_RADIUS / 2;
         SDL_RenderCopy(Game::renderer, yellowCone, nullptr, &dstGoal);
     }
+}
+
+void Field::drawOverlay()
+{
+    int gap = 100;
+    SDL_SetRenderDrawColor(Game::renderer, 220, 195, 60, 255);
+    SDL_RenderFillRect(Game::renderer, &overlayRect);
+
+    dstFace.x = (Game::WINDOW_WIDTH / 2 - PLAYERS_FACE_W / 2) - gap;
+    dstFace.y = Game::WINDOW_HEIGHT - PLAYERS_FACE_H;
+    srcFace.x = srcFace.y = 0;
+    SDL_RenderCopy(Game::renderer, playersFaceTexture, &srcFace, &dstFace);
+
+    dstFace.x += gap*2;
+    srcFace.y = PLAYERS_FACE_H;
+    SDL_RenderCopy(Game::renderer, playersFaceTexture, &srcFace, &dstFace);
+
+    rightTeamScoreText->draw();
+    leftTeamScoreText->draw();
 }

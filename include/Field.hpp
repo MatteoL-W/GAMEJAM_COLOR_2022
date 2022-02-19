@@ -4,11 +4,14 @@
 #include <vector>
 #include "Ball.hpp"
 #include "Player.hpp"
+#include "Text.hpp"
 
 const int SRC_PLAYERS_DIMENSIONS_W = 32;
 const int SRC_PLAYERS_DIMENSIONS_H = 44;
 const int DST_PLAYERS_DIMENSIONS_W = 46;
 const int DST_PLAYERS_DIMENSIONS_H = 64;
+const int PLAYERS_FACE_W = 64;
+const int PLAYERS_FACE_H = 85;
 const int BALL_RADIUS        = 32;
 const int CONE_RADIUS        = 40;
 
@@ -34,6 +37,8 @@ public:
 
     void drawGoals();
 
+    void drawOverlay();
+
     void setPositionClick(float x, float y) { positionClick.setPoint(x, y); };
 
     std::vector<Player*>  getPlayers() const { return players; };
@@ -43,9 +48,9 @@ public:
     Ball*                 getBall() const { return ball; };
 
 private:
-    SDL_Texture *playersTexture, *fieldTexture, *ballTexture, *blueCone, *yellowCone;
+    SDL_Texture *playersTexture, *fieldTexture, *ballTexture, *blueCone, *yellowCone, *playersFaceTexture;
 
-    SDL_Rect dstPlayers, srcPlayers, dstBall, dstGoal;
+    SDL_Rect dstPlayers, srcPlayers, dstBall, dstGoal, overlayRect, srcFace, dstFace;
 
     Point2D positionClick;
 
@@ -56,4 +61,8 @@ private:
     Ball*                 ball;
 
     std::vector<std::pair<Point2D*, Point2D*>> goals;
+
+    int leftTeamScore = 0, rightTeamScore = 0;
+
+    Text* leftTeamScoreText, *rightTeamScoreText;
 };
