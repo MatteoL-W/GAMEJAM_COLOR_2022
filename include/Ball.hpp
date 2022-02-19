@@ -8,7 +8,7 @@ class Ball : public DynamicObject {
 public:
     void shot(Point2D position) override;
 
-    float getSpeed() { return speed; };
+    float getSpeed() const { return speed; };
 
     void decelerate() { speed = speed * DECELERATION_FACTOR; };
 
