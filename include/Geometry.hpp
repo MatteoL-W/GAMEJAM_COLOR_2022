@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 
+extern float epsilon;
+
 class Point2D {
 private:
     float x;
@@ -34,6 +36,7 @@ public:
 
     Point2D& operator=(const Point2D& v);
     Point2D  operator+(const Point2D& p) const;
+    bool     operator==(const Point2D& p) const;
     Point2D  operator-(const Point2D& p) const;
     Point2D  operator*(const float& a) const;
     Point2D  operator/(const float& a) const;

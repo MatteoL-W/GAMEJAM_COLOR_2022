@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Geometry.hpp"
 #include "DynamicObject.hpp"
 
 const float DECELERATION_FACTOR = 0.98;
@@ -11,7 +10,7 @@ public:
 
     float getSpeed() { return speed; };
 
-    void decelerate() { speed = speed * DECELERATION_FACTOR;};
+    void decelerate() { speed = speed * DECELERATION_FACTOR; };
 
 private:
     float speed;

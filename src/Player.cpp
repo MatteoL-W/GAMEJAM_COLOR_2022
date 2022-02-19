@@ -6,5 +6,11 @@
  */
 void Player::shot(Point2D position)
 {
-// TODO: intersection function
+    // TODO: intersection function
+}
+
+bool Player::intersectBall(const Point2D& positionClick, const Ball& ball, std::vector<DynamicObject*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection)
+{
+    nearestIntersection(positionClick, *this, players, fieldLimits, intersection);
+    return true;
 }
