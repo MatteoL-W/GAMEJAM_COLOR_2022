@@ -23,3 +23,13 @@ bool Player::intersectBall(const Point2D& positionClick, const Ball& ball, std::
     }
     return false;
 }
+
+/* Pour plus tard:
+
+ void Map::updatePlayerSprite() {
+   int speed = 100;
+   int frames = 4;
+   srcPlayer.x = srcPlayer.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+}
+
+ */

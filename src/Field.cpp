@@ -17,18 +17,23 @@ Field::Field()
 void Field::loadAndInitialize()
 {
     // Initializing assets
-    blueCone              = IMG_LoadTexture(Game::renderer, "assets/images/cone1.png");
-    yellowCone            = IMG_LoadTexture(Game::renderer, "assets/images/cone2.png");
-    ballTexture           = IMG_LoadTexture(Game::renderer, "assets/images/ball.png");
-    fieldTexture          = IMG_LoadTexture(Game::renderer, "assets/images/field.png");
-    teamOnePlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/1_player.png");
-    teamTwoPlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/2_player.png");
-    teamTwoPlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/2_player.png");
+    blueCone       = IMG_LoadTexture(Game::renderer, "assets/images/cone1.png");
+    yellowCone     = IMG_LoadTexture(Game::renderer, "assets/images/cone2.png");
+    ballTexture    = IMG_LoadTexture(Game::renderer, "assets/images/ball.png");
+    fieldTexture   = IMG_LoadTexture(Game::renderer, "assets/images/field.png");
+    playersTexture = IMG_LoadTexture(Game::renderer, "assets/images/sprite_players.png");
 
-    srcPlayers.w = srcPlayers.h = PLAYERS_DIMENSIONS;
-    srcPlayers.x = srcPlayers.y = 0;
-    dstPlayers.w = dstPlayers.h = PLAYERS_DIMENSIONS;
+    srcPlayers.w = SRC_PLAYERS_DIMENSIONS_W;
+    srcPlayers.h = SRC_PLAYERS_DIMENSIONS_H;
+
+    srcPlayers.y = SRC_PLAYERS_DIMENSIONS_H;
+    srcPlayers.x = 0;
+
+    dstPlayers.w = DST_PLAYERS_DIMENSIONS_W;
+    dstPlayers.h = DST_PLAYERS_DIMENSIONS_H;
+
     dstBall.w = dstBall.h = BALL_RADIUS;
+
     dstGoal.w = dstGoal.h = CONE_RADIUS;
 
     // initialize ball
@@ -43,7 +48,7 @@ void Field::loadAndInitialize()
 
     // set Players
     for (int i = 0; i < 8; i++) {
-        players.push_back(new Player(PLAYERS_DIMENSIONS / 2, i / 4));
+        players.push_back(new Player(DST_PLAYERS_DIMENSIONS_H / 2, i / 4));
     }
 
     // set Goals
@@ -118,12 +123,11 @@ void Field::draw()
  */
 void Field::drawPlayers()
 {
-    SDL_Texture* tempTexture = nullptr;
     for (auto& player : players) {
         dstPlayers.x = player->getXOnDraw();
         dstPlayers.y = player->getYOnDraw();
-        tempTexture  = (player->getTeam() == 0) ? teamOnePlayersTexture : teamTwoPlayersTexture;
-        SDL_RenderCopy(Game::renderer, tempTexture, &srcPlayers, &dstPlayers);
+        srcPlayers.x = (player->getTeam() == 0) ? 0 : SRC_PLAYERS_DIMENSIONS_W * 4;
+        SDL_RenderCopy(Game::renderer, playersTexture, &srcPlayers, &dstPlayers);
     }
 }
 

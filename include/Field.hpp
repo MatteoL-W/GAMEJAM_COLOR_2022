@@ -5,7 +5,10 @@
 #include "Ball.hpp"
 #include "Player.hpp"
 
-const int PLAYERS_DIMENSIONS = 64;
+const int SRC_PLAYERS_DIMENSIONS_W = 32;
+const int SRC_PLAYERS_DIMENSIONS_H = 44;
+const int DST_PLAYERS_DIMENSIONS_W = 46;
+const int DST_PLAYERS_DIMENSIONS_H = 64;
 const int BALL_RADIUS        = 32;
 const int CONE_RADIUS        = 40;
 
@@ -40,7 +43,7 @@ public:
     Ball*                 getBall() const { return ball; };
 
 private:
-    SDL_Texture *teamOnePlayersTexture, *teamTwoPlayersTexture, *fieldTexture, *ballTexture, *blueCone, *yellowCone;
+    SDL_Texture *playersTexture, *fieldTexture, *ballTexture, *blueCone, *yellowCone;
 
     SDL_Rect dstPlayers, srcPlayers, dstBall, dstGoal;
 
