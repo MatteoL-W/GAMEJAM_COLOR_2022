@@ -9,7 +9,7 @@ public:
     {
     }
 
-    void intersect(Point2D position) override;
+    void shot(Point2D position) override;
 
     int getTeam() const { return team; };
 
