@@ -2,9 +2,9 @@
 
 void nearestIntersectionPlayers(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<DynamicObject*> players, Point2D& intersection)
 {
-    Point2D tmpIntersection;
+    Point2D tmpIntersection(2000, 2000);
     intersection.setPoint(2000, 2000);
-    float   tmpDistance;
+    float   tmpDistance    = 2000;
     Point2D objectPosition = currentObject.getPosition();
     float   distance       = objectPosition.getDistance(intersection);
     for (const auto& player : players) {
@@ -24,8 +24,8 @@ void nearestIntersectionPlayers(const Point2D& positionClick, const DynamicObjec
 
 void nearestIntersectionFieldLimits(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<Point2D*> fieldLimits, Point2D& intersection)
 {
-    Point2D tmpIntersection;
-    float   tmpDistance;
+    Point2D tmpIntersection(2000, 2000);
+    float   tmpDistance    = 2000;
     Point2D objectPosition = currentObject.getPosition();
     float   distance       = objectPosition.getDistance(intersection);
 
@@ -38,18 +38,10 @@ void nearestIntersectionFieldLimits(const Point2D& positionClick, const DynamicO
             }
         }
     }
-    if (intersectSegment(objectPosition, objectPosition.getDirection(positionClick), *fieldLimits[0], *fieldLimits[1], tmpIntersection)) {
-        tmpDistance = objectPosition.getDistance(tmpIntersection);
-        distance    = objectPosition.getDistance(intersection);
-        if (tmpDistance < distance) {
-            intersection = tmpIntersection;
-        }
-    }
 }
 
 void nearestIntersection(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<DynamicObject*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection)
 {
     nearestIntersectionPlayers(positionClick, currentObject, players, intersection);
     nearestIntersectionFieldLimits(positionClick, currentObject, fieldLimits, intersection);
-    intersection.print();
 }

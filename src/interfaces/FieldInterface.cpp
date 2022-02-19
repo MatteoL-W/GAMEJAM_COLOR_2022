@@ -1,6 +1,8 @@
 #include "../../include/interfaces/FieldInterface.hpp"
 #include <SDL2/SDL.h>
 
+Point2D intersection;
+
 /**
  * @brief Handle SDL Events in the menu
  */
@@ -16,6 +18,8 @@ void FieldInterface::handleEvents()
 
     case SDL_MOUSEBUTTONUP:
         field->setPositionClick(event.button.x, event.button.y);
+        field->getPlayerAt(0)->intersectBall(field->getPositionClick(), *(field->getBall()), field->getPlayers(),
+                                             field->getFieldLimits(), intersection);
         break;
     }
 }

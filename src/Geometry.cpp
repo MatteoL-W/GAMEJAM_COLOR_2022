@@ -1,7 +1,7 @@
 #include "../include/Geometry.hpp"
 #include <cmath>
 
-float epsilon = 0.00001;
+float epsilon = 0.01;
 
 Point2D& Point2D::operator=(const Point2D& point)
 {
@@ -56,7 +56,7 @@ Point2D Point2D::operator/(const float& a) const
  */
 float dot(Point2D vector1, Point2D vector2)
 {
-    return sqrt(vector1.getX() * vector2.getX() + vector1.getY() * vector1.getY());
+    return vector1.getX() * vector2.getX() + vector1.getY() * vector1.getY();
 }
 
 /**
@@ -65,7 +65,7 @@ float dot(Point2D vector1, Point2D vector2)
  */
 float norm(Point2D vector)
 {
-    return dot(vector, vector);
+    return sqrt(dot(vector, vector));
 }
 
 /**
@@ -235,21 +235,32 @@ int intersectLine(const Point2D& position, const Point2D& direction, Point2D a, 
 {
     Point2D p1 = position;
     Point2D p2 = position + direction;
-    float   m  = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
-    float   p  = p1.getY() - p1.getX() * m;
+    float   x  = 2000;
+    float   y  = 2000;
 
-    float n = (b.getY() - a.getY()) / (b.getX() - a.getX());
-    float q = a.getY() - a.getX() * n;
-
-    if (std::abs(n - m) < epsilon) {
-        return 0;
+    //cas 1, horizontal, cad a et b ont le même y et sont d'equation y=a.getY()
+    if (std::abs(a.getY() - b.getY()) < epsilon) {
+        if (std::abs(p1.getY() - p2.getY()) < epsilon) {
+            return 0;
+        }
+        float m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+        float p = p1.getY() - p1.getX() * m;
+        y       = a.getY();
+        x       = (y - p) / m;
     }
-    float   x = (p - q) / (n - m);
-    float   y = m * x + p;
+
+    //cas 2, vertical, cad a et b même x et d'équation x=a.getX();, c'est forcément le cas on a que des seg horizontaux ou verticaux
+    else {
+        if (std::abs(p1.getX() - p2.getX()) < epsilon) {
+            return 0;
+        }
+        float m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+        float p = p1.getY() - p1.getX() * m;
+        x       = a.getX();
+        y       = m * x + p;
+    }
+
     Point2D closestIntersection(x, y);
-    if (!isLooking(position, direction, closestIntersection)) {
-        return 0;
-    }
     intersection = closestIntersection;
     return 1;
 }
@@ -267,6 +278,9 @@ int intersectLine(const Point2D& position, const Point2D& direction, Point2D a, 
 int intersectSegment(const Point2D& position, const Point2D& direction, Point2D a, Point2D b, Point2D& intersection)
 {
     if (!intersectLine(position, direction, a, b, intersection)) {
+        return 0;
+    }
+    if (!isLooking(position, direction, intersection)) {
         return 0;
     }
     Point2D vectorA = vectorFromPoints(intersection, a);

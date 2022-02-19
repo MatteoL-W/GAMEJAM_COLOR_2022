@@ -47,11 +47,15 @@ public:
 
     void setPositionClick(float x, float y) { positionClick.setPoint(x, y); };
 
+    Point2D getPositionClick() const { return positionClick; };
+
     std::vector<Player*>  getPlayers() const { return players; };
 
     std::vector<Point2D*> getFieldLimits() const { return fieldLimits; };
 
     Ball*                 getBall() const { return ball; };
+
+    Player* getPlayerAt(int i) const { return players[i]; };
 
 private:
     SDL_Texture *playersTexture, *fieldTexture, *ballTexture, *blueCone, *yellowCone, *playersFaceTexture;
