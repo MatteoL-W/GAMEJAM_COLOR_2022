@@ -7,6 +7,7 @@
 
 const int PLAYERS_DIMENSIONS = 64;
 const int BALL_RADIUS        = 32;
+const int CONE_RADIUS        = 40;
 
 class Field {
 public:
@@ -28,20 +29,28 @@ public:
 
     void drawBall();
 
+    void drawGoals();
+
     void setPositionClick(float x, float y) { positionClick.setPoint(x, y); };
 
     std::vector<Player*>  getPlayers() const { return players; };
+
     std::vector<Point2D*> getFieldLimits() const { return fieldLimits; };
+
     Ball*                 getBall() const { return ball; };
 
 private:
-    SDL_Texture *teamOnePlayersTexture, *teamTwoPlayersTexture, *fieldTexture, *ballTexture;
+    SDL_Texture *teamOnePlayersTexture, *teamTwoPlayersTexture, *fieldTexture, *ballTexture, *blueCone, *yellowCone;
 
-    SDL_Rect dstPlayers, srcPlayers, dstBall;
+    SDL_Rect dstPlayers, srcPlayers, dstBall, dstGoal;
 
     Point2D positionClick;
 
     std::vector<Player*>  players;
+
     std::vector<Point2D*> fieldLimits;
+
     Ball*                 ball;
+
+    std::vector<std::pair<Point2D*, Point2D*>> goals;
 };

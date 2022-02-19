@@ -17,15 +17,22 @@ Field::Field()
 void Field::loadAndInitialize()
 {
     // Initializing assets
+    blueCone              = IMG_LoadTexture(Game::renderer, "assets/images/cone1.png");
+    yellowCone            = IMG_LoadTexture(Game::renderer, "assets/images/cone2.png");
     ballTexture           = IMG_LoadTexture(Game::renderer, "assets/images/ball.png");
     fieldTexture          = IMG_LoadTexture(Game::renderer, "assets/images/field.png");
     teamOnePlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/1_player.png");
+    teamTwoPlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/2_player.png");
     teamTwoPlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/2_player.png");
 
     srcPlayers.w = srcPlayers.h = PLAYERS_DIMENSIONS;
     srcPlayers.x = srcPlayers.y = 0;
     dstPlayers.w = dstPlayers.h = PLAYERS_DIMENSIONS;
     dstBall.w = dstBall.h = BALL_RADIUS;
+    dstGoal.w = dstGoal.h = CONE_RADIUS;
+
+    // initialize ball
+    ball = new Ball(BALL_RADIUS / 2);
 
     // Initializing vectors
     // set Limit Fields
@@ -39,8 +46,16 @@ void Field::loadAndInitialize()
         players.push_back(new Player(PLAYERS_DIMENSIONS / 2, i / 4));
     }
 
-    // initialize ball
-    ball = new Ball(BALL_RADIUS / 2);
+    // set Goals
+    int                           goalGap = 100;
+    std::pair<Point2D*, Point2D*> tempGoal;
+    tempGoal.first  = new Point2D(xPadding, (Game::WINDOW_HEIGHT / 2) - goalGap);
+    tempGoal.second = new Point2D(xPadding, (Game::WINDOW_HEIGHT / 2) + goalGap);
+    goals.push_back(tempGoal);
+
+    tempGoal.first  = new Point2D(Game::WINDOW_WIDTH - xPadding, (Game::WINDOW_HEIGHT / 2) - goalGap);
+    tempGoal.second = new Point2D(Game::WINDOW_WIDTH - xPadding, (Game::WINDOW_HEIGHT / 2) + goalGap);
+    goals.push_back(tempGoal);
 
     loadPlayersPattern();
     resetBallPosition();
@@ -64,7 +79,7 @@ void Field::loadPlayersPattern()
             players[i]->setPosition(Point2D(
                 randomUniformDistribution(
                     xPadding + radius + Game::WINDOW_WIDTH / 2,
-                    Game::WINDOW_WIDTH - xPadding),
+                    Game::WINDOW_WIDTH - xPadding - radius),
                 (yPadding + radius + 20) + (i % 4) * (Game::WINDOW_HEIGHT / 4)));
         }
     }
@@ -95,6 +110,7 @@ void Field::draw()
 
     drawPlayers();
     drawBall();
+    drawGoals();
 }
 
 /**
@@ -119,4 +135,17 @@ void Field::drawBall()
     dstBall.x = ball->getXOnDraw();
     dstBall.y = ball->getYOnDraw();
     SDL_RenderCopy(Game::renderer, ballTexture, nullptr, &dstBall);
+}
+
+void Field::drawGoals()
+{
+    for (int i = 0; i < 2; i++) {
+        dstGoal.x = goals[i].first->getX() - CONE_RADIUS / 2;
+        dstGoal.y = goals[i].first->getY() - CONE_RADIUS / 2;
+        SDL_RenderCopy(Game::renderer, blueCone, nullptr, &dstGoal);
+
+        dstGoal.x = goals[i].second->getX() - CONE_RADIUS / 2;
+        dstGoal.y = goals[i].second->getY() - CONE_RADIUS / 2;
+        SDL_RenderCopy(Game::renderer, yellowCone, nullptr, &dstGoal);
+    }
 }
