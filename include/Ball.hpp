@@ -6,6 +6,11 @@ const float DECELERATION_FACTOR = 0.98;
 
 class Ball : public DynamicObject {
 public:
+    Ball(float radius)
+        : DynamicObject(radius)
+    {
+    }
+
     void shot(Point2D position) override;
 
     float getSpeed() const { return speed; };
