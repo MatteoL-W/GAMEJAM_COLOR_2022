@@ -1,12 +1,14 @@
 #include "../include/Field.hpp"
 #include <SDL2/SDL_image.h>
 #include <vector>
+#include "../include/Ball.hpp"
 #include "../include/Game.hpp"
 #include "../include/Player.hpp"
 #include "../include/Random.hpp"
 
 std::vector<Player*>  players;
 std::vector<Point2D*> fieldLimits;
+Ball*                 ball;
 
 const int xPadding = 58;
 const int yPadding = 42;
@@ -22,12 +24,14 @@ Field::Field()
 void Field::loadAndInitialize()
 {
     // Initializing assets
+    ballTexture           = IMG_LoadTexture(Game::renderer, "assets/images/ball.png");
     fieldTexture          = IMG_LoadTexture(Game::renderer, "assets/images/field.png");
     teamOnePlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/1_player.png");
     teamTwoPlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/2_player.png");
 
     srcPlayers.w = srcPlayers.h = PLAYERS_DIMENSIONS;
     dstPlayers.w = dstPlayers.h = PLAYERS_DIMENSIONS;
+    dstBall.w = dstBall.h = BALL_RADIUS;
 
     // Initializing vectors
     // set Limit Fields
@@ -41,7 +45,46 @@ void Field::loadAndInitialize()
         players.push_back(new Player(PLAYERS_DIMENSIONS / 2, i / 4));
     }
 
+    // initialize ball
+    ball = new Ball(BALL_RADIUS / 2);
+
     loadPlayersPattern();
+    resetBallPosition();
+}
+
+/**
+ * @brief Place the players depending on pattern
+ */
+void Field::loadPlayersPattern()
+{
+    for (int i = 0; i < 8; i++) {
+        int radius = players[i]->getRadius();
+        if (i < 4) {
+            players[i]->setPosition(Point2D(
+                randomUniformDistribution(
+                    xPadding + radius,
+                    Game::WINDOW_WIDTH / 2 - 110
+                    ),
+                (yPadding + radius + 20) + i * (Game::WINDOW_HEIGHT / 4)));
+        }
+        else {
+            players[i]->setPosition(Point2D(
+                randomUniformDistribution(
+                    xPadding + radius + Game::WINDOW_WIDTH / 2,
+                    Game::WINDOW_WIDTH - xPadding
+                    ),
+                (yPadding + radius + 20) + (i % 4) * (Game::WINDOW_HEIGHT / 4)));
+            std::cout << players[i]->getPosition().getY() << " ";
+        }
+    }
+}
+
+/**
+ * @brief Reset the ball position
+ */
+void Field::resetBallPosition()
+{
+    ball->setPosition(Point2D(Game::WINDOW_WIDTH / 2., Game::WINDOW_HEIGHT / 2.));
 }
 
 /**
@@ -60,6 +103,7 @@ void Field::draw()
     SDL_RenderCopy(Game::renderer, fieldTexture, nullptr, nullptr);
 
     drawPlayers();
+    drawBall();
 }
 
 /**
@@ -69,23 +113,19 @@ void Field::drawPlayers()
 {
     SDL_Texture* tempTexture = nullptr;
     for (auto& player : players) {
-        dstPlayers.x = player->getPosition().getX();
-        dstPlayers.y = player->getPosition().getY();
+        dstPlayers.x = player->getXOnDraw();
+        dstPlayers.y = player->getYOnDraw();
         tempTexture  = (player->getTeam() == 0) ? teamOnePlayersTexture : teamTwoPlayersTexture;
         player->draw(tempTexture, srcPlayers, dstPlayers);
     }
 }
 
 /**
- * @brief Place the players depending on pattern
+ * @brief Draw the ball
  */
-void Field::loadPlayersPattern()
+void Field::drawBall()
 {
-    for (int i = 0; i < 8; i++) {
-        int team = i / 4;
-
-        players[i]->setPosition(Point2D(
-            randomUniformDistribution(xPadding, Game::WINDOW_WIDTH / 2 - xPadding) + (Game::WINDOW_WIDTH / 2 - xPadding) * team,
-            yPadding + (i % 4) * (Game::WINDOW_HEIGHT / 4) ));
-    }
+    dstBall.x = ball->getXOnDraw();
+    dstBall.y = ball->getYOnDraw();
+    SDL_RenderCopy(Game::renderer, ballTexture, nullptr, &dstBall);
 }

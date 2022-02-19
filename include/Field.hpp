@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 
 const int PLAYERS_DIMENSIONS = 64;
+const int BALL_RADIUS = 32;
 
 class Field {
 public:
@@ -12,16 +13,20 @@ public:
 
     void loadAndInitialize();
 
+    static void loadPlayersPattern();
+
+    static void resetBallPosition();
+
     void update();
 
     void draw();
 
     void drawPlayers();
 
-    static void loadPlayersPattern();
+    void drawBall();
 
 private:
-    SDL_Texture* teamOnePlayersTexture, *teamTwoPlayersTexture, *fieldTexture;
+    SDL_Texture* teamOnePlayersTexture, *teamTwoPlayersTexture, *fieldTexture, *ballTexture;
 
-    SDL_Rect dstPlayers, srcPlayers;
+    SDL_Rect dstPlayers, srcPlayers, dstBall;
 };

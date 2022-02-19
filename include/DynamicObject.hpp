@@ -54,6 +54,10 @@ public:
 
     float getRadius() const { return radius; };
 
+    float getXOnDraw() const { return getPosition().getX() - getRadius(); };
+
+    float getYOnDraw() const { return getPosition().getY() - getRadius(); };
+
 private:
     Point2D position;
 
