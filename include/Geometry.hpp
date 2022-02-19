@@ -53,5 +53,9 @@ float   norm(Point2D vector);
 Point2D normalize(Point2D vector);
 Point2D vectorFromPoints(Point2D const& vector1, Point2D const& vector2);
 
-int solveQuadratic(const float a, const float b, const float c, float* x0, float* x1);
-int intersectCircle(Point2D circleOrigin, float radius, Point2D position, Point2D direction, Point2D& intersection);
+int   solveQuadratic(float a, float b, float c, float* x0, float* x1);
+float scalarProduct(const Point2D& p1, const Point2D& p2);
+int   isLooking(const Point2D& position, const Point2D& direction, const Point2D& intersection);
+int   intersectCircle(const Point2D& circleOrigin, float radius, const Point2D& position, const Point2D& direction, Point2D& intersection);
+int   intersectLine(const Point2D& position, const Point2D& direction, Point2D a, Point2D b, Point2D& intersection);
+int   intersectSegment(const Point2D& position, const Point2D& direction, Point2D a, Point2D b, Point2D& intersection);

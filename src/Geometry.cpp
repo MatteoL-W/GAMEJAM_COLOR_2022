@@ -91,6 +91,11 @@ float Point2D::getDistance(float xPoint, float yPoint) const
     return sqrt((point.getX() - x) * (point.getX() - x) + (point.getY() - y) * (point.getY() - y));
 }
 
+float scalarProduct(const Point2D& p1, const Point2D& p2)
+{
+    return p1.getX() * p2.getX() + p1.getY() * p2.getY();
+}
+
 int solveQuadratic(const float a, const float b, const float c, float* x0, float* x1)
 {
     float delta = b * b - 4 * a * c;
@@ -107,7 +112,18 @@ int solveQuadratic(const float a, const float b, const float c, float* x0, float
     return 1;
 }
 
-int intersectCircle(Point2D circleOrigin, float radius, Point2D position, Point2D direction, Point2D& intersection)
+int isLooking(const Point2D& position, const Point2D& direction, const Point2D& intersection)
+{
+    Point2D lookAt             = vectorFromPoints(position, position + direction);
+    Point2D lookAtIntersection = vectorFromPoints(position, intersection);
+
+    if (scalarProduct(lookAt, lookAtIntersection) < 0) {
+        return 0;
+    }
+    return 1;
+}
+
+int intersectCircle(const Point2D& circleOrigin, float radius, const Point2D& position, const Point2D& direction, Point2D& intersection)
 {
     float   x0, x1;
     float   y;
@@ -131,7 +147,47 @@ int intersectCircle(Point2D circleOrigin, float radius, Point2D position, Point2
         x0 = x1;
     }
     y = m * x0 + c;
-    intersection.setPoint(x0, y);
-    intersection.print();
+    Point2D closestIntersection(x0, y);
+    if (!isLooking(position, direction, closestIntersection)) {
+        return 0;
+    }
+    intersection = closestIntersection;
+    return 1;
+}
+
+int intersectLine(const Point2D& position, const Point2D& direction, Point2D a, Point2D b, Point2D& intersection)
+{
+    Point2D p1 = position;
+    Point2D p2 = position + direction;
+    float   m  = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+    float   p  = p1.getY() - p1.getX() * m;
+
+    float n = (b.getY() - a.getY()) / (b.getX() - a.getX());
+    float q = a.getY() - a.getX() * n;
+
+    if (std::abs(n - m) < 0.0001) {
+        return 0;
+    }
+    float   x = (p - q) / (n - m);
+    float   y = m * x + p;
+    Point2D closestIntersection(x, y);
+    if (!isLooking(position, direction, closestIntersection)) {
+        return 0;
+    }
+    intersection = closestIntersection;
+    return 1;
+}
+
+int intersectSegment(const Point2D& position, const Point2D& direction, Point2D a, Point2D b, Point2D& intersection)
+{
+    if (!intersectLine(position, direction, a, b, intersection)) {
+        return 0;
+    }
+    Point2D vectorA = vectorFromPoints(intersection, a);
+    Point2D vectorB = vectorFromPoints(intersection, b);
+
+    if (scalarProduct(vectorA, vectorB) > 0) {
+        return 0;
+    }
     return 1;
 }
