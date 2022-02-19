@@ -14,6 +14,7 @@ Field::Field()
     initVectors();
 
     ball = new Ball(BALL_RADIUS / 2);
+    intersection.setPoint(2000, 2000);
 
     loadOverlay();
     loadPlayersPattern();

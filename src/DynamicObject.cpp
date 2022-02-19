@@ -3,7 +3,6 @@
 void nearestIntersectionPlayers(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<DynamicObject*> players, Point2D& intersection)
 {
     Point2D tmpIntersection(2000, 2000);
-    intersection.setPoint(2000, 2000);
     float   tmpDistance    = 2000;
     Point2D objectPosition = currentObject.getPosition();
     float   distance       = objectPosition.getDistance(intersection);

@@ -12,6 +12,7 @@ void Player::shot(Point2D position)
 bool Player::intersectBall(const Point2D& positionClick, const Ball& ball, std::vector<Player*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection)
 {
     std::vector<DynamicObject*> playersDynamic;
+    intersection.setPoint(2000, 2000);
     for (int i = 0; i < 8; i++) {
         playersDynamic.push_back(players[i]);
     }
@@ -21,6 +22,7 @@ bool Player::intersectBall(const Point2D& positionClick, const Ball& ball, std::
         float distanceBall    = this->getPosition().getDistance(tmpIntersection);
         float nearestDistance = this->getPosition().getDistance(intersection);
         if (distanceBall < nearestDistance) {
+            intersection = tmpIntersection;
             intersection.print();
             return true;
         }
