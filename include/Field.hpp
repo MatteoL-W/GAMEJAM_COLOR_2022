@@ -16,9 +16,9 @@ public:
 
     void loadAndInitialize();
 
-    static void loadPlayersPattern();
+    void loadPlayersPattern();
 
-    static void resetBallPosition();
+    void resetBallPosition();
 
     void update();
 

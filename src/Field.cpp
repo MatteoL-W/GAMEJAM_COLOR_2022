@@ -1,9 +1,6 @@
 #include "../include/Field.hpp"
 #include <SDL2/SDL_image.h>
-#include <vector>
-#include "../include/Ball.hpp"
 #include "../include/Game.hpp"
-#include "../include/Player.hpp"
 #include "../include/Random.hpp"
 
 const int xPadding = 58;
@@ -55,7 +52,7 @@ void Field::loadAndInitialize()
 void Field::loadPlayersPattern()
 {
     for (int i = 0; i < 8; i++) {
-        std::cout << players int radius = players[i]->getRadius();
+        int radius = players[i]->getRadius();
         if (i < 4) {
             players[i]->setPosition(Point2D(
                 randomUniformDistribution(
