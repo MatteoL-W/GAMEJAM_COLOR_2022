@@ -1,6 +1,7 @@
 #include "../include/Main.hpp"
 #include <SDL2/SDL.h>
 #include "../include/Game.hpp"
+#include "../include/Geometry.hpp"
 
 Game* game = nullptr;
 
