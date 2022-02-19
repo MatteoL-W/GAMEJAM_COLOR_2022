@@ -19,7 +19,7 @@ public:
     void drawPlayers();
 
 private:
-    SDL_Texture* teamOnePlayersTexture, *teamTwoPlayersTexture;
+    SDL_Texture* teamOnePlayersTexture, *teamTwoPlayersTexture, *fieldTexture;
 
     SDL_Rect dstPlayers, srcPlayers;
 };

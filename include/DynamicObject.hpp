@@ -46,6 +46,8 @@ public:
      */
     void changeSpeed(float newSpeed) { speed = newSpeed; };
 
+    Point2D getPosition() { return position; };
+
 private:
     Point2D position;
 

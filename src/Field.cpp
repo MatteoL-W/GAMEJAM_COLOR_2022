@@ -5,6 +5,7 @@
 #include "../include/Player.hpp"
 
 std::vector<Player*> players;
+std::vector<Point2D*> fieldLimits;
 
 Field::Field()
 {
@@ -16,12 +17,25 @@ Field::Field()
  */
 void Field::loadAndInitialize()
 {
+    // Initializing assets
+    fieldTexture = IMG_LoadTexture(Game::renderer, "assets/images/field.png");
     teamOnePlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/1_player.png");
     teamTwoPlayersTexture = IMG_LoadTexture(Game::renderer, "assets/images/2_player.png");
 
     srcPlayers.w = srcPlayers.h = PLAYERS_DIMENSIONS;
     dstPlayers.w = dstPlayers.h = PLAYERS_DIMENSIONS;
 
+    // Initializing vectors
+    // set Limit Fields
+    const int xPadding = 58;
+    const int yPadding = 42;
+
+    fieldLimits.push_back(new Point2D(xPadding, yPadding));
+    fieldLimits.push_back(new Point2D(Game::WINDOW_WIDTH - xPadding, yPadding));
+    fieldLimits.push_back(new Point2D(Game::WINDOW_WIDTH - xPadding, Game::WINDOW_HEIGHT - yPadding));
+    fieldLimits.push_back(new Point2D(xPadding, Game::WINDOW_HEIGHT - yPadding));
+
+    // set Players
     for (int i = 0; i < 8; i++) {
         players.push_back(new Player(PLAYERS_DIMENSIONS / 2, i / 4));
     }
@@ -39,6 +53,9 @@ void Field::update()
  */
 void Field::draw()
 {
+    // Drawing the field
+    SDL_RenderCopy(Game::renderer, fieldTexture, nullptr, nullptr);
+
     drawPlayers();
 }
 
@@ -48,9 +65,10 @@ void Field::draw()
 void Field::drawPlayers()
 {
     SDL_Texture* tempTexture = nullptr;
-    for (size_t i = 0; i < players.size(); i++) {
-        dstPlayers.x = PLAYERS_DIMENSIONS * i;
-        tempTexture = (players[i]->getTeam() == 0) ? teamOnePlayersTexture : teamTwoPlayersTexture;
-        players[i]->draw(tempTexture, srcPlayers, dstPlayers);
+    for (auto & player : players) {
+        dstPlayers.x = player->getPosition().getX();
+        dstPlayers.y = player->getPosition().getY();
+        tempTexture = (player->getTeam() == 0) ? teamOnePlayersTexture : teamTwoPlayersTexture;
+        player->draw(tempTexture, srcPlayers, dstPlayers);
     }
 }
