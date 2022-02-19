@@ -9,12 +9,38 @@ void FieldInterface::handleEvents()
     SDL_Event event = game->getEvent();
     SDL_PollEvent(&event);
 
+    if (field->getFocusedPlayer() != nullptr) {
+        switch (event.type) {
+        case SDL_MOUSEBUTTONDOWN:
+            field->setFocusedPlayer(nullptr);
+            break;
+
+        case SDL_MOUSEMOTION:
+            field->setPositionMouse(event.button.x, event.button.y);
+            break;
+        }
+    }
+
     switch (event.type) {
     case SDL_QUIT:
         game->setRunning(false);
         break;
 
-    case SDL_MOUSEBUTTONUP:
+    case SDL_MOUSEBUTTONDOWN:
+        if (field->getFocusedPlayer() == nullptr) {
+            std::vector<Player*> players = field->getPlayers();
+            float                mouseX  = event.button.x;
+            float                mouseY  = event.button.y;
+
+            for (auto& player : players) {
+                float   radius    = player->getRadius();
+                Point2D playerPos = player->getPosition();
+                if ((mouseX > playerPos.getX() - radius && mouseX < playerPos.getX() + radius) && (mouseY > playerPos.getY() - radius && mouseY < playerPos.getY() + radius)) {
+                    field->setFocusedPlayer(player);
+                }
+            }
+        }
+
         field->setPositionClick(event.button.x, event.button.y);
         break;
     }

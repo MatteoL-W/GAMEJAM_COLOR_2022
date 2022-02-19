@@ -10,10 +10,10 @@ const int SRC_PLAYERS_DIMENSIONS_W = 32;
 const int SRC_PLAYERS_DIMENSIONS_H = 44;
 const int DST_PLAYERS_DIMENSIONS_W = 46;
 const int DST_PLAYERS_DIMENSIONS_H = 64;
-const int PLAYERS_FACE_W = 64;
-const int PLAYERS_FACE_H = 85;
-const int BALL_RADIUS        = 32;
-const int CONE_RADIUS        = 40;
+const int PLAYERS_FACE_W           = 64;
+const int PLAYERS_FACE_H           = 85;
+const int BALL_RADIUS              = 32;
+const int CONE_RADIUS              = 40;
 
 class Field {
 public:
@@ -45,30 +45,40 @@ public:
 
     void drawOverlay();
 
+    void drawArrow();
+
     void setPositionClick(float x, float y) { positionClick.setPoint(x, y); };
 
-    std::vector<Player*>  getPlayers() const { return players; };
+    void setPositionMouse(float x, float y) { positionMouse.setPoint(x, y); };
+
+    std::vector<Player*> getPlayers() const { return players; };
 
     std::vector<Point2D*> getFieldLimits() const { return fieldLimits; };
 
-    Ball*                 getBall() const { return ball; };
+    Ball* getBall() const { return ball; };
+
+    Player* getFocusedPlayer() { return focusOn; };
+
+    void setFocusedPlayer(Player* player) { focusOn = player; };
 
 private:
-    SDL_Texture *playersTexture, *fieldTexture, *ballTexture, *blueCone, *yellowCone, *playersFaceTexture;
+    SDL_Texture *playersTexture, *fieldTexture, *ballTexture, *blueCone, *yellowCone, *playersFaceTexture, *arrowTexture;
 
-    SDL_Rect dstPlayers, srcPlayers, dstBall, dstGoal, overlayRect, srcFace, dstFace;
+    SDL_Rect dstPlayers, srcPlayers, dstBall, dstGoal, overlayRect, srcFace, dstFace, dstArrow;
 
-    Point2D positionClick;
+    Point2D positionClick, positionMouse;
 
-    std::vector<Player*>  players;
+    std::vector<Player*> players;
 
     std::vector<Point2D*> fieldLimits;
 
-    Ball*                 ball;
+    Ball* ball;
 
     std::vector<std::pair<Point2D*, Point2D*>> goals;
 
     int leftTeamScore = 0, rightTeamScore = 0;
 
-    Text* leftTeamScoreText, *rightTeamScoreText;
+    Text *leftTeamScoreText, *rightTeamScoreText;
+
+    Player* focusOn = nullptr;
 };

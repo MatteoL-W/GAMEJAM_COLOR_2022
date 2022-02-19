@@ -1,5 +1,6 @@
 #include "../include/Field.hpp"
 #include <SDL2/SDL_image.h>
+#include <math.h>
 #include "../include/Random.hpp"
 #include "../include/Utils.hpp"
 #include "../include/variables/Color.hpp"
@@ -31,6 +32,7 @@ void Field::loadAssets()
     fieldTexture       = IMG_LoadTexture(Game::renderer, "assets/images/field.png");
     playersTexture     = IMG_LoadTexture(Game::renderer, "assets/images/sprite_players.png");
     playersFaceTexture = IMG_LoadTexture(Game::renderer, "assets/images/sprite_players_face.png");
+    arrowTexture       = IMG_LoadTexture(Game::renderer, "assets/images/arrow.png");
 }
 
 /**
@@ -58,6 +60,8 @@ void Field::initRect()
 
     dstFace.w = srcFace.w = PLAYERS_FACE_W;
     dstFace.h = srcFace.h = PLAYERS_FACE_H;
+
+    dstArrow.h = 20;
 }
 
 /**
@@ -154,6 +158,10 @@ void Field::draw()
     drawGoals();
 
     drawOverlay();
+
+    if (focusOn != nullptr) {
+        drawArrow();
+    }
 }
 
 /**
@@ -179,6 +187,9 @@ void Field::drawBall()
     SDL_RenderCopy(Game::renderer, ballTexture, nullptr, &dstBall);
 }
 
+/**
+ * @brief Draw the cones
+ */
 void Field::drawGoals()
 {
     for (int i = 0; i < 2; i++) {
@@ -192,6 +203,9 @@ void Field::drawGoals()
     }
 }
 
+/**
+ * @brief Draw the score
+ */
 void Field::drawOverlay()
 {
     int gap = 100;
@@ -209,4 +223,25 @@ void Field::drawOverlay()
 
     rightTeamScoreText->draw();
     leftTeamScoreText->draw();
+}
+int  angle = 0;
+void Field::drawArrow()
+{
+    int radius = focusOn->getRadius();
+    Point2D playerPos = focusOn->getPosition();
+
+    SDL_RendererFlip arrowFlip = SDL_FLIP_NONE;
+    SDL_Point        playerPoint;
+    (angle++) % 360;
+
+    float distance = playerPos.getDistance(positionMouse);
+    dstArrow.w     = (distance > 150) ? 150 : distance;
+    dstArrow.h     = 20;
+    dstArrow.x     = playerPos.getX() - radius/2 - dstArrow.w / 2;
+    dstArrow.y     = playerPos.getY() - dstArrow.h / 2;
+
+    playerPoint.x = dstArrow.w / 2;
+    playerPoint.y = dstArrow.h / 2;
+
+    SDL_RenderCopyEx(Game::renderer, arrowTexture, nullptr, &dstArrow, angle, &playerPoint, arrowFlip);
 }
