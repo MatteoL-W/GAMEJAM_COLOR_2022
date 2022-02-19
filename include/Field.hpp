@@ -21,7 +21,13 @@ public:
 
     ~Field() = default;
 
-    void loadAndInitialize();
+    void loadAssets();
+
+    void initRect();
+
+    void initVectors();
+
+    void loadOverlay();
 
     void loadPlayersPattern();
 

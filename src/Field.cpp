@@ -1,6 +1,5 @@
 #include "../include/Field.hpp"
 #include <SDL2/SDL_image.h>
-#include "../include/Game.hpp"
 #include "../include/Random.hpp"
 #include "../include/Utils.hpp"
 #include "../include/variables/Color.hpp"
@@ -10,22 +9,35 @@ const int yPadding = 42;
 
 Field::Field()
 {
-    loadAndInitialize();
+    loadAssets();
+    initRect();
+    initVectors();
+
+    ball = new Ball(BALL_RADIUS / 2);
+
+    loadOverlay();
+    loadPlayersPattern();
+    resetBallPosition();
+}
+
+/**
+ * @brief Load assets
+ */
+void Field::loadAssets()
+{
+    blueCone           = IMG_LoadTexture(Game::renderer, "assets/images/cone1.png");
+    yellowCone         = IMG_LoadTexture(Game::renderer, "assets/images/cone2.png");
+    ballTexture        = IMG_LoadTexture(Game::renderer, "assets/images/ball.png");
+    fieldTexture       = IMG_LoadTexture(Game::renderer, "assets/images/field.png");
+    playersTexture     = IMG_LoadTexture(Game::renderer, "assets/images/sprite_players.png");
+    playersFaceTexture = IMG_LoadTexture(Game::renderer, "assets/images/sprite_players_face.png");
 }
 
 /**
  * @brief Load assets and objects
  */
-void Field::loadAndInitialize()
+void Field::initRect()
 {
-    // Initializing assets
-    blueCone       = IMG_LoadTexture(Game::renderer, "assets/images/cone1.png");
-    yellowCone     = IMG_LoadTexture(Game::renderer, "assets/images/cone2.png");
-    ballTexture    = IMG_LoadTexture(Game::renderer, "assets/images/ball.png");
-    fieldTexture   = IMG_LoadTexture(Game::renderer, "assets/images/field.png");
-    playersTexture = IMG_LoadTexture(Game::renderer, "assets/images/sprite_players.png");
-    playersFaceTexture = IMG_LoadTexture(Game::renderer, "assets/images/sprite_players_face.png");
-
     srcPlayers.w = SRC_PLAYERS_DIMENSIONS_W;
     srcPlayers.h = SRC_PLAYERS_DIMENSIONS_H;
 
@@ -46,23 +58,25 @@ void Field::loadAndInitialize()
 
     dstFace.w = srcFace.w = PLAYERS_FACE_W;
     dstFace.h = srcFace.h = PLAYERS_FACE_H;
+}
 
-    // initialize ball
-    ball = new Ball(BALL_RADIUS / 2);
-
-    // Initializing vectors
-    // set Limit Fields
+/**
+ * @brief Initialize field limits, players and goals vector
+ */
+void Field::initVectors()
+{
+    // Limit Fields
     fieldLimits.push_back(new Point2D(xPadding, yPadding));
     fieldLimits.push_back(new Point2D(Game::WINDOW_WIDTH - xPadding, yPadding));
     fieldLimits.push_back(new Point2D(Game::WINDOW_WIDTH - xPadding, Game::WINDOW_HEIGHT - yPadding));
     fieldLimits.push_back(new Point2D(xPadding, Game::WINDOW_HEIGHT - yPadding));
 
-    // set Players
+    // Players
     for (int i = 0; i < 8; i++) {
         players.push_back(new Player(DST_PLAYERS_DIMENSIONS_H / 2, i / 4));
     }
 
-    // set Goals
+    // Goals
     int                           goalGap = 100;
     std::pair<Point2D*, Point2D*> tempGoal;
     tempGoal.first  = new Point2D(xPadding, (Game::WINDOW_HEIGHT / 2) - goalGap);
@@ -72,7 +86,13 @@ void Field::loadAndInitialize()
     tempGoal.first  = new Point2D(Game::WINDOW_WIDTH - xPadding, (Game::WINDOW_HEIGHT / 2) - goalGap);
     tempGoal.second = new Point2D(Game::WINDOW_WIDTH - xPadding, (Game::WINDOW_HEIGHT / 2) + goalGap);
     goals.push_back(tempGoal);
+}
 
+/**
+ * @brief Load assets and objects
+ */
+void Field::loadOverlay()
+{
     leftTeamScoreText = new Text();
     leftTeamScoreText->create(std::to_string(leftTeamScore), WhiteColor, "Press");
     leftTeamScoreText->changeDestRect(Game::WINDOW_WIDTH / 2 - 60, Game::WINDOW_HEIGHT - 50);
@@ -80,13 +100,10 @@ void Field::loadAndInitialize()
     rightTeamScoreText = new Text();
     rightTeamScoreText->create(std::to_string(rightTeamScore), WhiteColor, "Press");
     rightTeamScoreText->changeDestRect(Game::WINDOW_WIDTH / 2 + 40, Game::WINDOW_HEIGHT - 50);
-
-    loadPlayersPattern();
-    resetBallPosition();
 }
 
 /**
- * @brief Place the players depending on pattern
+ * @brief Place the players randomly
  */
 void Field::loadPlayersPattern()
 {
@@ -118,18 +135,18 @@ void Field::resetBallPosition()
 }
 
 /**
- * @brief Update the menu
+ * @brief Update the field
  */
 void Field::update()
 {
 }
 
 /**
- * @brief Draw the menu
+ * @brief Draw the field
  */
 void Field::draw()
 {
-    // Drawing the field
+    // Drawing the background
     SDL_RenderCopy(Game::renderer, fieldTexture, nullptr, nullptr);
 
     drawPlayers();
@@ -186,7 +203,7 @@ void Field::drawOverlay()
     srcFace.x = srcFace.y = 0;
     SDL_RenderCopy(Game::renderer, playersFaceTexture, &srcFace, &dstFace);
 
-    dstFace.x += gap*2;
+    dstFace.x += gap * 2;
     srcFace.y = PLAYERS_FACE_H;
     SDL_RenderCopy(Game::renderer, playersFaceTexture, &srcFace, &dstFace);
 
