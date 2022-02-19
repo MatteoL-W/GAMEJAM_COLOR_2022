@@ -1,6 +1,6 @@
 #include "../include/DynamicObject.hpp"
 
-void nearestIntersectionPlayers(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<Player*> players, Point2D& intersection)
+void nearestIntersectionPlayers(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<DynamicObject*> players, Point2D& intersection)
 {
     Point2D tmpIntersection;
     intersection.setPoint(2000, 2000);
@@ -8,17 +8,16 @@ void nearestIntersectionPlayers(const Point2D& positionClick, const DynamicObjec
     Point2D objectPosition = currentObject.getPosition();
     float   distance       = objectPosition.getDistance(intersection);
     for (const auto& player : players) {
-        Point2D positionPlayer = player.getPosition();
-        float   radius         = player.getRadius();
+        Point2D positionPlayer = player->getPosition();
+        float   radius         = player->getRadius();
         if (!(objectPosition == positionPlayer)) {
-            if (intersectCircle(positionPlayer, radius, objectPosition, objectPosition.getDirection(positionClick), tmpIntersection)))
-                {
-                    tmpDistance = objectPosition.getDistance(tmpIntersection);
-                    distance    = objectPosition.getDistance(intersection);
-                    if (tmpDistance < distance) {
-                        intersection = tmpIntersection;
-                    }
+            if (intersectCircle(positionPlayer, radius, objectPosition, objectPosition.getDirection(positionClick), tmpIntersection)) {
+                tmpDistance = objectPosition.getDistance(tmpIntersection);
+                distance    = objectPosition.getDistance(intersection);
+                if (tmpDistance < distance) {
+                    intersection = tmpIntersection;
                 }
+            }
         }
     }
 }
@@ -31,7 +30,7 @@ void nearestIntersectionFieldLimits(const Point2D& positionClick, const DynamicO
     float   distance       = objectPosition.getDistance(intersection);
 
     //first wall
-    if (intersectSegment(objectPosition, objectPosition.getDirection(positionClick), fieldLimits[0], fieldLimits[1], tmpIntersection)) {
+    if (intersectSegment(objectPosition, objectPosition.getDirection(positionClick), *fieldLimits[0], *fieldLimits[1], tmpIntersection)) {
         tmpDistance = objectPosition.getDistance(tmpIntersection);
         distance    = objectPosition.getDistance(intersection);
         if (tmpDistance < distance) {
@@ -40,7 +39,7 @@ void nearestIntersectionFieldLimits(const Point2D& positionClick, const DynamicO
     }
 
     //second wall
-    if (intersectSegment(objectPosition, objectPosition.getDirection(positionClick), fieldLimits[0], fieldLimits[1], tmpIntersection)) {
+    if (intersectSegment(objectPosition, objectPosition.getDirection(positionClick), *fieldLimits[0], *fieldLimits[1], tmpIntersection)) {
         tmpDistance = objectPosition.getDistance(tmpIntersection);
         distance    = objectPosition.getDistance(intersection);
         if (tmpDistance < distance) {
@@ -49,7 +48,7 @@ void nearestIntersectionFieldLimits(const Point2D& positionClick, const DynamicO
     }
 
     //third wall
-    if (intersectSegment(objectPosition, objectPosition.getDirection(positionClick), fieldLimits[1], fieldLimits[2], tmpIntersection)) {
+    if (intersectSegment(objectPosition, objectPosition.getDirection(positionClick), *fieldLimits[1], *fieldLimits[2], tmpIntersection)) {
         tmpDistance = objectPosition.getDistance(tmpIntersection);
         distance    = objectPosition.getDistance(intersection);
         if (tmpDistance < distance) {
@@ -58,7 +57,7 @@ void nearestIntersectionFieldLimits(const Point2D& positionClick, const DynamicO
     }
 
     //fourth wall
-    if (intersectSegment(objectPosition, objectPosition.getDirection(positionClick), fieldLimits[3], fieldLimits[0], tmpIntersection)) {
+    if (intersectSegment(objectPosition, objectPosition.getDirection(positionClick), *fieldLimits[3], *fieldLimits[0], tmpIntersection)) {
         tmpDistance = objectPosition.getDistance(tmpIntersection);
         distance    = objectPosition.getDistance(intersection);
         if (tmpDistance < distance) {
@@ -67,7 +66,7 @@ void nearestIntersectionFieldLimits(const Point2D& positionClick, const DynamicO
     }
 }
 
-void nearestIntersection(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<Player*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection)
+void nearestIntersection(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<DynamicObject*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection)
 {
     nearestIntersectionPlayers(positionClick, currentObject, players, intersection);
     nearestIntersectionFieldLimits(positionClick, currentObject, fieldLimits, intersection);

@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-float epsilon = 0.00001;
+extern float epsilon;
 
 class Point2D {
 private:

@@ -29,7 +29,8 @@ public:
      * @param srcRect
      * @param dstRect
      */
-    static void draw(SDL_Texture* texture, SDL_Rect srcRect, SDL_Rect dstRect) {
+    static void draw(SDL_Texture* texture, SDL_Rect srcRect, SDL_Rect dstRect)
+    {
         SDL_RenderCopy(Game::renderer, texture, &srcRect, &dstRect);
     }
 
@@ -59,8 +60,8 @@ private:
     float speed;
 };
 
-void nearestIntersectionPlayers(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<Player*> players, Point2D& intersection);
+void nearestIntersectionPlayers(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<DynamicObject*> players, Point2D& intersection);
 
 void nearestIntersectionFieldLimits(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<Point2D*> fieldLimits, Point2D& intersection);
 
-void nearestIntersection(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<Player*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection);
+void nearestIntersection(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<DynamicObject*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection);

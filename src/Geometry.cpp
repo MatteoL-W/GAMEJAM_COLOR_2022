@@ -1,6 +1,8 @@
 #include "../include/Geometry.hpp"
 #include <cmath>
 
+float epsilon = 0.00001;
+
 Point2D& Point2D::operator=(const Point2D& point)
 {
     if (this != &point) {

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Ball.hpp"
 #include "DynamicObject.hpp"
-#include "Geometry.hpp"
 
 class Player : public DynamicObject {
 public:
@@ -13,6 +13,8 @@ public:
     void shot(Point2D position) override;
 
     int getTeam() const { return team; };
+
+    bool intersectBall(const Point2D& positionClick, const Ball& ball, std::vector<DynamicObject*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection);
 
 private:
     bool collision;
