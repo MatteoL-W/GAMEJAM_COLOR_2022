@@ -33,12 +33,12 @@ bool Player::intersectBall(const Point2D& positionClick, Ball& ball, std::vector
 
 /**
  * @brief Anticipate the player behaviour (is he intersecting something and moving)
- * 
- * @param positionClick 
- * @param ball 
- * @param players 
- * @param fieldLimits 
- * @param intersection 
+ *
+ * @param positionClick
+ * @param ball
+ * @param players
+ * @param fieldLimits
+ * @param intersection
  */
 void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, std::vector<Player*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection)
 {
@@ -46,7 +46,7 @@ void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, s
     Point2D directionBall = this->getDirectionBall();
     if (!touchesBall) {
         float distance = this->getPosition().getDistance(intersection);
-        if (this->getSpeed() > 0.1 && distance > 40) {
+        if (this->getSpeed() > 1 && distance > 40) {
             this->move(this->getPosition() + direction * this->getSpeed());
         }
         else {
@@ -55,14 +55,14 @@ void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, s
     }
     else {
         float distance = this->getPosition().getDistance(intersection);
-        if (this->getSpeed() > 0.1 && distance > 50) {
+        if (this->getSpeed() > 1 && distance > 50) {
             this->move(this->getPosition() + direction * this->getSpeed());
         }
         else {
             float distance = ball.getPosition().getDistance(this->getIntersectionBall());
 //            ball.getPosition().print();
 //            this->getIntersectionBall().print();
-            if (ball.getSpeed() > 0.1 && distance > 40 && isLooking(ball.getPosition(), directionBall, this->getIntersectionBall())) {
+            if (ball.getSpeed() > 1 && distance > 40 && isLooking(ball.getPosition(), directionBall, this->getIntersectionBall())) {
                 ball.move(ball.getPosition() + direction * ball.getSpeed());
             }
             else {

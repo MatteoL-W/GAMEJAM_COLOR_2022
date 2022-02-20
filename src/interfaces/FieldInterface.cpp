@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 
 const float FORCE_FACTOR = 4.5;
+int roundIndex = 0;
 
 /**
  * @brief Handle SDL Events in the menu
@@ -45,8 +46,11 @@ void FieldInterface::handleEvents()
                 float   radius    = player->getRadius();
                 Point2D playerPos = player->getPosition();
                 if ((mouseX > playerPos.getX() - radius && mouseX < playerPos.getX() + radius) && (mouseY > playerPos.getY() - radius && mouseY < playerPos.getY() + radius)) {
-                    field->setFocusedPlayer(player);
-                    field->getFocusedPlayer()->changeSpeed(0.1);
+                    if ((roundIndex % 2 == 0 && player->getTeam() % 2 == 0) || (roundIndex % 2 == 1 && player->getTeam() % 2 == 1)) {
+                        field->setFocusedPlayer(player);
+                        field->getFocusedPlayer()->changeSpeed(0.1);
+                        roundIndex++;
+                    }
                 }
             }
         }
