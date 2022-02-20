@@ -20,7 +20,7 @@ public:
 
     void playerShoots() { isShooting = true; };
 
-    void stopShooting() { isShooting = false; };
+    void stopShooting() { this->changeSpeed(0);isShooting = false; };
 
     Point2D getIntersectionBall() const { return intersectionBall; };
     void    setIntersectionBall(const Point2D& newIntersection) { intersectionBall = newIntersection; };

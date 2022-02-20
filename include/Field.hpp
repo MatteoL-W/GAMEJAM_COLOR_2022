@@ -77,22 +77,25 @@ public:
 
     void resetPlayersReactions() { srcFace2.x = srcFace1.x = 0; };
 
-    Player getPlayerAt(int i) const { return *(players[i]); };
+    Player getPlayerAt(Player* player) const { return *(player); };
 
-    void intersectBallOfPlayer(int i, const Point2D& positionClick)
+    void intersectBallOfPlayer(Player* player, const Point2D& positionClick)
     {
-        touchesBall = false;
-        if (players[i]->intersectBall(positionClick, *ball, players, fieldLimits, intersection))
+        if (player->intersectBall(positionClick, *ball, players, fieldLimits, intersection)) {
             touchesBall = true;
+        }
     };
 
-    void shootOfPlayer(int i, const Point2D& positionClick) { players[i]->shoot(positionClick, *ball, touchesBall, players, fieldLimits, intersection); };
+    void touchesBallNot() {touchesBall = false;};
 
-    bool isPlayerShootingAt(int i) { players[i]->isPlayerShooting(); };
+    void shootOfPlayer(Player* player, const Point2D& positionClick) { player->shoot(positionClick, *ball, touchesBall, players, fieldLimits, intersection); };
+
+    bool isPlayerShootingAt(Player* player) { player->isPlayerShooting(); };
 
     int getGoalAt(Player* player) { player->getGoal(); };
 
-    //bouh cracra mais tmp
+
+    // bouh cracra mais tmp
     Point2D intersection;
 
 private:
@@ -106,7 +109,7 @@ private:
 
     std::vector<Point2D*> fieldLimits;
 
-    Ball*                 ball;
+    Ball* ball;
 
     std::vector<std::pair<Point2D*, Point2D*>> goals;
 

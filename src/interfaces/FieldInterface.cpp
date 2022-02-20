@@ -12,12 +12,17 @@ void FieldInterface::handleEvents()
     SDL_PollEvent(&event);
 
     if (field->getFocusedPlayer() != nullptr) {
+        if (field->getFocusedPlayer()->isPlayerShooting()) {
+            field->shootOfPlayer(field->getFocusedPlayer(), field->getPositionClick());
+        }
+
         float distance = field->getFocusedPlayer()->getPosition().getDistance(field->getPositionMouse());
         switch (event.type) {
         case SDL_MOUSEBUTTONDOWN:
-            field->intersectBallOfPlayer(0, field->getPositionClick());
+            field->setPositionClick(event.button.x, event.button.y);
+            field->intersectBallOfPlayer(field->getFocusedPlayer(), field->getPositionClick());
             field->getFocusedPlayer()->changeSpeed(((distance > 150) ? 150 : distance) / FORCE_FACTOR);
-            field->setFocusedPlayer(nullptr);
+            field->getFocusedPlayer()->getPosition().print();
             break;
 
         case SDL_MOUSEMOTION:
@@ -31,56 +36,32 @@ void FieldInterface::handleEvents()
         game->setRunning(false);
         break;
 
-//    case SDL_MOUSEBUTTONUP:
-//        field->setPositionClick(event.button.x, event.button.y);
-//        field->intersectBallOfPlayer(0, field->getPositionClick());
-//        break;
+        //    case SDL_MOUSEBUTTONUP:
+        //        field->setPositionClick(event.button.x, event.button.y);
+        //        field->intersectBallOfPlayer(0, field->getPositionClick());
+        //        break;
 
     case SDL_MOUSEBUTTONDOWN:
         if (field->getFocusedPlayer() == nullptr) {
-            std::vector<Player*> players = field->getPlayers();
-            float                mouseX  = event.button.x;
-            float                mouseY  = event.button.y;
+            float mouseX = event.button.x;
+            float mouseY = event.button.y;
 
-            for (auto& player : players) {
+            for (auto& player : field->getPlayers()) {
                 float   radius    = player->getRadius();
                 Point2D playerPos = player->getPosition();
                 if ((mouseX > playerPos.getX() - radius && mouseX < playerPos.getX() + radius) && (mouseY > playerPos.getY() - radius && mouseY < playerPos.getY() + radius)) {
                     field->setFocusedPlayer(player);
+                    field->getFocusedPlayer()->changeSpeed(0.1);
                 }
             }
         }
 
-        field->setPositionClick(event.button.x, event.button.y);
         break;
     }
 
-    // if is shooting, call shoot function
-    // else, field->verifGoalAt(player), if goal == 0, pas de but, si goal == 1, but à gauche, sinon but à droite
-    if (field->isPlayerShootingAt(0)) {
-        field->shootOfPlayer(0, field->getPositionClick());
-    }
-    else {
-        //        if (goal != 0) {
-        //            if (goal == 1) {
-        //                field->incrementLeftTeamScore();
-        //            } else if (goal == 2) {
-        //                field->incrementRightTeamScore();
-        //            }
-        //
-        //            field->updateTextOverlay();
-        //            field->playersReactionWhenGoal(goal);
-        //            render();
-        //
-        //            SDL_Delay(3000);
-        //
-        //            field->resetPlayersReactions();
-        //            field->resetBallPosition();
-        //            field->loadPlayersPattern();
-        //            goal = 0;
-        //        }
-        // std::cout << " goal : " << field->getGoalAt(field->getFocusedPlayer()) << std::endl;
-        // std::cout << field->getFocusedPlayer();
+    if (field->getFocusedPlayer() != nullptr && field->getFocusedPlayer()->getSpeed() == 0) {
+        field->touchesBallNot();
+        field->setFocusedPlayer(nullptr);
     }
 }
 
