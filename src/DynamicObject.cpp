@@ -1,8 +1,9 @@
 #include "../include/DynamicObject.hpp"
 
-void nearestIntersectionPlayers(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<DynamicObject*> players, Point2D& intersection)
+void nearestIntersectionPlayers(const Point2D& positionClick, DynamicObject& currentObject, std::vector<DynamicObject*> players)
 {
     Point2D tmpIntersection(2000, 2000);
+    Point2D intersection(2000, 2000);
     float   tmpDistance    = 2000;
     Point2D objectPosition = currentObject.getPosition();
     float   distance       = objectPosition.getDistance(intersection);
@@ -19,12 +20,14 @@ void nearestIntersectionPlayers(const Point2D& positionClick, const DynamicObjec
             }
         }
     }
+    currentObject.setIntersectionPlayers(intersection);
 }
 
-void nearestIntersectionFieldLimits(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<Point2D*> fieldLimits, Point2D& intersection)
+void nearestIntersectionFieldLimits(const Point2D& positionClick, DynamicObject& currentObject, std::vector<Point2D*> fieldLimits)
 {
     Point2D tmpIntersection(2000, 2000);
-    float   tmpDistance    = 2000;
+    float   tmpDistance = 2000;
+    Point2D intersection(2000, 2000);
     Point2D objectPosition = currentObject.getPosition();
     float   distance       = objectPosition.getDistance(intersection);
 
@@ -37,10 +40,21 @@ void nearestIntersectionFieldLimits(const Point2D& positionClick, const DynamicO
             }
         }
     }
+    currentObject.setIntersectionFieldLimits(intersection);
 }
 
-void nearestIntersection(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<DynamicObject*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection)
+void nearestIntersection(const Point2D& positionClick, DynamicObject& currentObject, std::vector<DynamicObject*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection)
 {
-    nearestIntersectionPlayers(positionClick, currentObject, players, intersection);
-    nearestIntersectionFieldLimits(positionClick, currentObject, fieldLimits, intersection);
+    nearestIntersectionPlayers(positionClick, currentObject, players);
+    nearestIntersectionFieldLimits(positionClick, currentObject, fieldLimits);
+
+    float distancePlayers     = currentObject.getIntersectionPlayers().getDistance(positionClick);
+    float distanceFieldLimits = currentObject.getIntersectionFieldLimits().getDistance(positionClick);
+
+    if (distancePlayers < distanceFieldLimits) {
+        intersection = currentObject.getIntersectionPlayers();
+    }
+    else {
+        intersection = currentObject.getIntersectionFieldLimits();
+    }
 }

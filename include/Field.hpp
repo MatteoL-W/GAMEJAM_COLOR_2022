@@ -57,9 +57,15 @@ public:
 
     Player getPlayerAt(int i) const { return *(players[i]); };
 
-    void intersectBallOfPlayer(int i, const Point2D& positionClick) { players[i]->intersectBall(positionClick, *ball, players, fieldLimits, intersection); };
+    void intersectBallOfPlayer(int i, const Point2D& positionClick)
+    {
+        if (players[i]->intersectBall(positionClick, *ball, players, fieldLimits, intersection))
+            touchesBall = true;
+    };
 
-    void shootOfPlayer(int i, Point2D const& direction) { players[i]->shoot(*ball, players, fieldLimits, intersection, direction); };
+    void shootOfPlayer(int i, Point2D const& direction) { players[i]->shoot(*ball, touchesBall, players, fieldLimits, intersection, direction); };
+
+    bool isPlayerShootingAt(int i) { players[i]->isPlayerShooting(); };
 
     //bouh cracra mais tmp
     Point2D intersection;
@@ -82,4 +88,6 @@ private:
     int leftTeamScore = 0, rightTeamScore = 0;
 
     Text *leftTeamScoreText, *rightTeamScoreText;
+
+    bool touchesBall;
 };

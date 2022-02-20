@@ -1,7 +1,6 @@
 #include "../../include/interfaces/FieldInterface.hpp"
 #include <SDL2/SDL.h>
 
-bool    clicked = false;
 Point2D direction(0, 0);
 
 /**
@@ -22,11 +21,10 @@ void FieldInterface::handleEvents()
         field->intersectBallOfPlayer(0, field->getPositionClick());
         Point2D click = field->getPositionClick();
         direction     = field->getPlayerAt(0).getPosition().getDirection(click);
-        clicked       = true;
         break;
     }
 
-    if (clicked) {
+    if (field->isPlayerShootingAt(0)) {
         field->shootOfPlayer(0, direction);
     }
 }

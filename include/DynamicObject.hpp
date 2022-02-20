@@ -10,7 +10,7 @@ const float DECELERATION_FACTOR = 0.90;
 class DynamicObject {
 public:
     explicit DynamicObject(float radius)
-        : position(Point2D(0, 0)), radius(radius), speed(50)
+        : position(Point2D(0, 0)), radius(radius), speed(30)
     {
     }
 
@@ -37,7 +37,7 @@ public:
     void move(Point2D newPosition)
     {
         this->position = newPosition;
-        decelerate();
+        //decelerate();
     }
 
     void setPosition(Point2D newPosition) { position = newPosition; };
@@ -52,16 +52,26 @@ public:
 
     float getSpeed() const { return speed; };
 
+    void setIntersectionPlayers(const Point2D& intersection) { intersectionPlayers = intersection; };
+    void setIntersectionFieldLimits(const Point2D& intersection) { intersectionFieldLimits = intersection; };
+
+    Point2D getIntersectionPlayers() const { return intersectionPlayers; };
+    Point2D getIntersectionFieldLimits() const { return intersectionFieldLimits; };
+
 private:
     Point2D position;
 
     float radius;
 
     float speed;
+
+    Point2D intersectionPlayers;
+
+    Point2D intersectionFieldLimits;
 };
 
-void nearestIntersectionPlayers(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<DynamicObject*> players, Point2D& intersection);
+void nearestIntersectionPlayers(const Point2D& positionClick, DynamicObject& currentObject, std::vector<DynamicObject*> players);
 
-void nearestIntersectionFieldLimits(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<Point2D*> fieldLimits, Point2D& intersection);
+void nearestIntersectionFieldLimits(const Point2D& positionClick, DynamicObject& currentObject, std::vector<Point2D*> fieldLimits);
 
-void nearestIntersection(const Point2D& positionClick, const DynamicObject& currentObject, std::vector<DynamicObject*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection);
+void nearestIntersection(const Point2D& positionClick, DynamicObject& currentObject, std::vector<DynamicObject*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection);
