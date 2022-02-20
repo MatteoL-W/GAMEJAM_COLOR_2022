@@ -17,7 +17,7 @@ bool Player::intersectBall(const Point2D& positionClick, Ball& ball, std::vector
     nearestIntersection(positionClick, *this, playersDynamic, fieldLimits, intersection);
     intersection.print();
     Point2D tmpIntersection;
-    if (intersectCircle(ball.getPosition(), ball.getRadius(), this->getPosition(), this->getDirectionPlayer(), tmpIntersection)) {
+    if (intersectCircle(ball.getPosition(), ball.getRadius()+15, this->getPosition(), this->getDirectionPlayer(), tmpIntersection)) {
         float distance        = this->getPosition().getDistance(tmpIntersection);
         float nearestDistance = this->getPosition().getDistance(intersection);
         if (distance < nearestDistance) {
@@ -62,12 +62,13 @@ void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, s
             float distance = ball.getPosition().getDistance(this->getIntersectionBall());
 //            ball.getPosition().print();
 //            this->getIntersectionBall().print();
-            if (ball.getSpeed() > 1 && distance > 40 && isLooking(ball.getPosition(), directionBall, this->getIntersectionBall())) {
+            std::cout << "dist"<<distance<<std::endl;
+            if (ball.getSpeed() > 1 && distance > 40 && isLooking(ball.getPosition(), direction, this->getIntersectionBall())) {
                 ball.move(ball.getPosition() + direction * ball.getSpeed());
             }
             else {
                 if (
-                    ((std::abs(Game::xPadding - ball.getPosition().getX())<100 ) or (std::abs(Game::WINDOW_WIDTH-Game::xPadding - ball.getPosition().getX())<100))
+                    ((std::abs(Game::xPadding - ball.getPosition().getX())<50 ) or (std::abs(Game::WINDOW_WIDTH-Game::xPadding - ball.getPosition().getX())<50))
                     &&( this->getIntersectionBall() == ball.getIntersectionFieldLimits())
                     && (this->getIntersectionBall().getY() >= (Game::WINDOW_HEIGHT / 2) - 100
                         && this->getIntersectionBall().getY() <= (Game::WINDOW_HEIGHT / 2) + 100)) {

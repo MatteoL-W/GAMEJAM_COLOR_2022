@@ -213,15 +213,6 @@ void Field::drawGoals()
         dstGoal.y = goals[i].second->getY() - CONE_RADIUS / 2;
         SDL_RenderCopy(Game::renderer, temporaryTexture, nullptr, &dstGoal);
     }
-    //    for (int i = 0; i < 2; i++) {
-    //        dstGoal.x = goals[i].first->getX() - CONE_RADIUS / 2;
-    //        dstGoal.y = goals[i].first->getY() - CONE_RADIUS / 2;
-    //        SDL_RenderCopy(Game::renderer, blueCone, nullptr, &dstGoal);
-    //
-    //        dstGoal.x = goals[i].second->getX() - CONE_RADIUS / 2;
-    //        dstGoal.y = goals[i].second->getY() - CONE_RADIUS / 2;
-    //        SDL_RenderCopy(Game::renderer, yellowCone, nullptr, &dstGoal);
-    //    }
 }
 
 /**

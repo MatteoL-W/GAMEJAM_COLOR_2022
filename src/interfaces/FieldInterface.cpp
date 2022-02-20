@@ -121,7 +121,7 @@ void FieldInterface::render()
     SDL_RenderClear(Game::renderer);
 
     field->draw();
-    if (field->getFocusedPlayer() != nullptr && field->getFocusedPlayer()->getGoal() != 0) {
+    if (field->getFocusedPlayer() != nullptr && (field->getFocusedPlayer()->getGoal() == 1 || field->getFocusedPlayer()->getGoal() == 2 )) {
         field->drawGoalText();
     }
 
