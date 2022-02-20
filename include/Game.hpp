@@ -30,7 +30,7 @@ public:
 
     SDL_Event getEvent() const { return event; };
 
-    int getWinner() { return *winner; };
+    int getWinner() { return winner; };
 
 private:
     SDL_Window* window;
@@ -41,5 +41,5 @@ private:
 
     SDL_Event event;
 
-    int* winner = nullptr;
+    int winner = 0;
 };

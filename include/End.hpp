@@ -9,12 +9,12 @@ public:
 
     ~End() = default;
 
-    void update(int winner);
+    void update();
 
-    void draw();
+    void draw(int winnerNb);
 
 private:
-    SDL_Texture* endBackground;
+    SDL_Texture* endBackground1, *endBackground2, *ends[2];
 
     std::string fileName;
 };

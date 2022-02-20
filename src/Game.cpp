@@ -4,11 +4,13 @@
 #include <iostream>
 #include "../include/interfaces/MenuInterface.hpp"
 #include "../include/interfaces/FieldInterface.hpp"
+#include "../include/interfaces/EndInterface.hpp"
 
 SDL_Renderer* Game::renderer = nullptr;
 
 MenuInterface* menuInterface = nullptr;
 FieldInterface* fieldInterface = nullptr;
+EndInterface* endInterface = nullptr;
 
 /**
  * @brief Initialize the game (assign the window, renderer, define the game as running)
@@ -39,6 +41,7 @@ Game::Game()
     /* Define the interfaces */
     menuInterface = new MenuInterface(this);
     fieldInterface = new FieldInterface(this);
+    endInterface = new EndInterface(this);
 
     /* Define the default interface*/
     currentInterface = menuInterface;

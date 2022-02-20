@@ -23,7 +23,7 @@ void EndInterface::handleEvents()
  */
 void EndInterface::update()
 {
-    end->update(game->getWinner());
+    end->update();
 }
 
 /**
@@ -33,7 +33,7 @@ void EndInterface::render()
 {
     SDL_RenderClear(Game::renderer);
 
-    end->draw();
+    end->draw(game->getWinner());
 
     SDL_RenderPresent(Game::renderer);
 }

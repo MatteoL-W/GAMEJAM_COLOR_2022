@@ -4,21 +4,23 @@
 
 End::End()
 {
-    endBackground = IMG_LoadTexture(Game::renderer, fileName.c_str());
+    endBackground1 = IMG_LoadTexture(Game::renderer,"assets/images/end_player1_win.png");
+    endBackground2 = IMG_LoadTexture(Game::renderer,"assets/images/end_player2_win.png");
+    ends[0] = endBackground1;
+    ends[1] = endBackground2;
 }
 
 /**
  * @brief Update the end
  */
-void End::update(int winner)
+void End::update()
 {
-    fileName = "assets/images/end_player" + std::to_string(winner) + "_win.png";
 }
 
 /**
  * @brief Draw the ending
  */
-void End::draw()
+void End::draw(int winnerNb)
 {
-    SDL_RenderCopy(Game::renderer, endBackground, nullptr, nullptr);
+    SDL_RenderCopy(Game::renderer, ends[winnerNb], nullptr, nullptr);
 }
