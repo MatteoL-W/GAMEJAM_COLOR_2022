@@ -37,14 +37,14 @@ public:
     Point2D getDirectionBallRebound() const { return directionBallRebound; };
     void    setDirectionBallRebound(const Point2D& newIntersection)
     {
-        //directionBallRebound = getReflection(newIntersection, directionBall);
+        //directionBallRebound = getReflection(newIntersection, directionPlayer);
         directionBallRebound = getNormal(newIntersection);
         rebound              = true;
     };
     void setDirectionBallRebound(const float& x, const float& y)
     {
         Point2D intersection(x, y);
-        //directionBallRebound = getReflection(intersection, directionBall);
+        //directionBallRebound = getReflection(intersection, directionPlayer);
         directionBallRebound = getNormal(intersection);
         rebound              = true;
     };

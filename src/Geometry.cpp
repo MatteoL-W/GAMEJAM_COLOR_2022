@@ -170,10 +170,31 @@ int solveQuadratic(const float a, const float b, const float c, float* x0, float
  */
 int isLooking(const Point2D& position, const Point2D& direction, const Point2D& intersection)
 {
-    Point2D lookAt             = vectorFromPoints(position, position + direction);
+    Point2D lookAt             = vectorFromPoints(position, position + direction * 10.);
     Point2D lookAtIntersection = vectorFromPoints(position, intersection);
 
-    if (dot(lookAt, lookAtIntersection) < 0) {
+    Point2D pos   = position;
+    Point2D dir   = direction;
+    Point2D inter = intersection;
+
+    std::cout << std::endl;
+    std::cout << "La position de départ est : ";
+    pos.print();
+    std::cout << "On regarde vers";
+    (pos + dir * 10.).print();
+    std::cout << " et l'intersection visée est : ";
+    inter.print();
+
+    std::cout << std::endl
+              << "look : ";
+    lookAt.print();
+    std::cout << "lookAtIntersection : ";
+    lookAtIntersection.print();
+
+    std::cout << "produit scalaire : " << dot(lookAt, lookAtIntersection) << std::endl;
+
+    if (dot(lookAt, lookAtIntersection) > 3.14 / 2) {
+        std::cout << "SE REGARDENT AP" << std::endl;
         return 0;
     }
     return 1;
@@ -238,26 +259,43 @@ int intersectLine(const Point2D& position, const Point2D& direction, Point2D a, 
     float   x  = 2000;
     float   y  = 2000;
 
-    //cas 1, horizontal, cad a et b ont le même y et sont d'equation y=a.getY()
-    if (std::abs(a.getY() - b.getY()) < epsilon) {
-        if (std::abs(p1.getY() - p2.getY()) < epsilon) {
+    if (std::abs(p1.getX() - p2.getX()) < 10) {
+        if (std::abs(a.getX() - b.getX()) < epsilon) {
             return 0;
         }
-        float m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
-        float p = p1.getY() - p1.getX() * m;
-        y       = a.getY();
-        x       = (y - p) / m;
+        x = p1.getX();
+        y = a.getY();
+    }
+    else if (std::abs(p1.getY() - p2.getY()) < 10) {
+        if (std::abs(a.getY() - b.getY()) < epsilon) {
+            return 0;
+        }
+        y = p1.getY();
+        x = a.getX();
     }
 
-    //cas 2, vertical, cad a et b même x et d'équation x=a.getX();, c'est forcément le cas on a que des seg horizontaux ou verticaux
+    //cas 1, horizontal, cad a et b ont le même y et sont d'equation y=a.getY()
     else {
-        if (std::abs(p1.getX() - p2.getX()) < epsilon) {
-            return 0;
+        if (std::abs(a.getY() - b.getY()) < epsilon) {
+            if (std::abs(p1.getY() - p2.getY()) < epsilon) {
+                return 0;
+            }
+            float m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+            float p = p1.getY() - p1.getX() * m;
+            y       = a.getY();
+            x       = (y - p) / m;
         }
-        float m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
-        float p = p1.getY() - p1.getX() * m;
-        x       = a.getX();
-        y       = m * x + p;
+
+        //cas 2, vertical, cad a et b même x et d'équation x=a.getX();, c'est forcément le cas on a que des seg horizontaux ou verticaux
+        else {
+            if (std::abs(p1.getX() - p2.getX()) < epsilon) {
+                return 0;
+            }
+            float m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+            float p = p1.getY() - p1.getX() * m;
+            x       = a.getX();
+            y       = m * x + p;
+        }
     }
 
     Point2D closestIntersection(x, y);
@@ -289,5 +327,9 @@ int intersectSegment(const Point2D& position, const Point2D& direction, Point2D 
     if (dot(vectorAI, vectorAB) < 0) {
         return 0;
     }
+    std::cout << "intersect segment" << std::endl;
+    a.print();
+    b.print();
+    intersection.print();
     return 1;
 }

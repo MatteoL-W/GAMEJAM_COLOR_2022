@@ -45,18 +45,18 @@ void nearestIntersectionFieldLimits(const Point2D& positionClick, DynamicObject&
 
 void nearestIntersection(const Point2D& positionClick, DynamicObject& currentObject, std::vector<DynamicObject*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection)
 {
-    nearestIntersectionPlayers(positionClick, currentObject, players);
+    //nearestIntersectionPlayers(positionClick, currentObject, players);
     nearestIntersectionFieldLimits(positionClick, currentObject, fieldLimits);
 
-    float distancePlayers     = currentObject.getIntersectionPlayers().getDistance(positionClick);
-    float distanceFieldLimits = currentObject.getIntersectionFieldLimits().getDistance(positionClick);
+    float distancePlayers = currentObject.getIntersectionPlayers().getDistance(positionClick);
+    //float distanceFieldLimits = currentObject.getIntersectionFieldLimits().getDistance(positionClick);
 
-    if (distancePlayers < distanceFieldLimits) {
-        intersection = currentObject.getIntersectionPlayers();
-    }
-    else {
-        intersection = currentObject.getIntersectionFieldLimits();
-    }
+    //     if (distancePlayers < distanceFieldLimits) {
+    //         intersection = currentObject.getIntersectionPlayers();
+    //     }
+    //     else {
+    //         intersection = currentObject.getIntersectionFieldLimits();
+    //     }
 }
 
 Point2D getNormal(Point2D intersection)
@@ -80,6 +80,6 @@ Point2D getNormal(Point2D intersection)
 Point2D getReflection(Point2D intersection, Point2D direction)
 {
     Point2D normal     = getNormal(intersection);
-    Point2D reflection = direction - normal * (dot(direction, normal) * 2);
+    Point2D reflection = -direction + normal * (dot(direction, normal) * 2);
     return reflection;
 }
