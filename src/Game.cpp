@@ -41,7 +41,7 @@ Game::Game()
     fieldInterface = new FieldInterface(this);
 
     /* Define the default interface*/
-    currentInterface = fieldInterface;
+    currentInterface = menuInterface;
 
     isRunning = true;
 }
@@ -66,4 +66,12 @@ void Game::refresh()
     currentInterface->handleEvents();
     currentInterface->update();
     currentInterface->render();
+}
+
+/**
+ * @brief Set the interface to field
+ */
+void Game::setInterfaceToField()
+{
+    currentInterface = fieldInterface;
 }

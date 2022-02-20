@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Text.hpp"
-
 class Menu {
 public:
     Menu();
@@ -10,8 +8,10 @@ public:
 
     void update();
 
-    void draw();
+    void drawHome();
+
+    void drawRules();
 
 private:
-    Text* titleText;
+    SDL_Texture* homeBackground, *rulesBackground;
 };

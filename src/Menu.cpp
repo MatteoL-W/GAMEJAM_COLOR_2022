@@ -1,15 +1,11 @@
+#include <SDL2/SDL_image.h>
 #include "../include/Menu.hpp"
 #include "../include/Game.hpp"
-#include "../include/Utils.hpp"
-#include "../include/variables/Color.hpp"
 
 Menu::Menu()
 {
-    titleText = new Text();
-    titleText->create("Welcome in the menu", WhiteColor, "Press");
-    titleText->changeDestRect(
-        getPadding(Game::WINDOW_WIDTH, titleText->getDestRect().w),
-        getPadding(Game::WINDOW_HEIGHT, titleText->getDestRect().h));
+    homeBackground = IMG_LoadTexture(Game::renderer, "assets/images/home.png");
+    rulesBackground = IMG_LoadTexture(Game::renderer, "assets/images/rules.png");
 }
 
 /**
@@ -20,9 +16,17 @@ void Menu::update()
 }
 
 /**
- * @brief Draw the menu
+ * @brief Draw the home
  */
-void Menu::draw()
+void Menu::drawHome()
 {
-    titleText->draw();
+    SDL_RenderCopy(Game::renderer, homeBackground, nullptr, nullptr);
+}
+
+/**
+ * @brief Draw the rules
+ */
+void Menu::drawRules()
+{
+    SDL_RenderCopy(Game::renderer, rulesBackground, nullptr, nullptr);
 }

@@ -9,9 +9,21 @@ void MenuInterface::handleEvents()
     SDL_Event event = game->getEvent();
     SDL_PollEvent(&event);
 
-    if (event.type == SDL_QUIT) {
+    switch (event.type) {
+    case SDL_QUIT:
         game->setRunning(false);
+        break;
+
+    case SDL_KEYDOWN:
+        if (inHome) {
+            inHome = false;
+        } else {
+            game->setInterfaceToField();
+        }
+        break;
     }
+
+
 }
 
 /**
@@ -29,7 +41,12 @@ void MenuInterface::render()
 {
     SDL_RenderClear(Game::renderer);
 
-    menu->draw();
+    if (inHome) {
+        menu->drawHome();
+    } else {
+        menu->drawRules();
+    }
+
 
     SDL_RenderPresent(Game::renderer);
 }
