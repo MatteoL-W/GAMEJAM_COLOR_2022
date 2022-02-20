@@ -4,6 +4,7 @@ bool Player::intersectBall(const Point2D& positionClick, Ball& ball, std::vector
 {
     playerShoots();
     notRebounding();
+    noGoalYet();
     intersection.setPoint(2000, 2000);
     this->setIntersectionBall(2000, 2000);
     this->setDirectionPlayer(this->getPosition().getDirection(positionClick));
@@ -76,6 +77,12 @@ void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, s
                         ball.move(ball.getPosition() + direction * ball.getSpeed());
                     }
                     else {
+                        if (this->getIntersectionBall().getX() == Game::xPadding) {
+                            leftTeamScores();
+                        }
+                        else {
+                            rightTeamScores();
+                        }
                         //rajouter test pour savoir quel but
                         std::cout << "distance : " << distance << " et is looking dir : ";
                         direction.print();

@@ -51,6 +51,11 @@ public:
 
     void notRebounding() { rebound = false; };
 
+    int  getGoal() const { return goal; };
+    void leftTeamScores() { goal = 1; };
+    void rightTeamScores() { goal = 2; };
+    void noGoalYet() { goal = 0; };
+
 private:
     bool collision;
 
@@ -66,4 +71,6 @@ private:
     Point2D directionBallRebound;
 
     bool rebound;
+
+    int goal;
 };

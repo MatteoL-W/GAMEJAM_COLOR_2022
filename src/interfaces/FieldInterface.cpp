@@ -27,6 +27,9 @@ void FieldInterface::handleEvents()
     if (field->isPlayerShootingAt(0)) {
         field->shootOfPlayer(0, field->getPositionClick());
     }
+    else {
+        std::cout << " goal : " << field->getGoalAt(0) << std::endl;
+    }
 }
 
 /**

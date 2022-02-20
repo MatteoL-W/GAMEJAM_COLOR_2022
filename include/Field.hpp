@@ -68,6 +68,8 @@ public:
 
     bool isPlayerShootingAt(int i) { players[i]->isPlayerShooting(); };
 
+    int getGoalAt(int i) { players[i]->getGoal(); };
+
     //bouh cracra mais tmp
     Point2D intersection;
 
