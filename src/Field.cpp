@@ -197,15 +197,31 @@ void Field::drawBall()
  */
 void Field::drawGoals()
 {
+    SDL_Texture* temporaryTexture = nullptr;
     for (int i = 0; i < 2; i++) {
+        if (i == 0) {
+            temporaryTexture = blueCone;
+        } else {
+            temporaryTexture = yellowCone;
+        }
+
         dstGoal.x = goals[i].first->getX() - CONE_RADIUS / 2;
         dstGoal.y = goals[i].first->getY() - CONE_RADIUS / 2;
-        SDL_RenderCopy(Game::renderer, blueCone, nullptr, &dstGoal);
+        SDL_RenderCopy(Game::renderer, temporaryTexture, nullptr, &dstGoal);
 
         dstGoal.x = goals[i].second->getX() - CONE_RADIUS / 2;
         dstGoal.y = goals[i].second->getY() - CONE_RADIUS / 2;
-        SDL_RenderCopy(Game::renderer, yellowCone, nullptr, &dstGoal);
+        SDL_RenderCopy(Game::renderer, temporaryTexture, nullptr, &dstGoal);
     }
+    //    for (int i = 0; i < 2; i++) {
+    //        dstGoal.x = goals[i].first->getX() - CONE_RADIUS / 2;
+    //        dstGoal.y = goals[i].first->getY() - CONE_RADIUS / 2;
+    //        SDL_RenderCopy(Game::renderer, blueCone, nullptr, &dstGoal);
+    //
+    //        dstGoal.x = goals[i].second->getX() - CONE_RADIUS / 2;
+    //        dstGoal.y = goals[i].second->getY() - CONE_RADIUS / 2;
+    //        SDL_RenderCopy(Game::renderer, yellowCone, nullptr, &dstGoal);
+    //    }
 }
 
 /**

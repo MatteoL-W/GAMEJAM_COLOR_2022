@@ -85,13 +85,3 @@ void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, s
         }
     }
 }
-
-/* Pour plus tard:
-
- void Map::updatePlayerSprite() {
-   int speed = 100;
-   int frames = 4;
-   srcPlayer.x = srcPlayer.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
-}
-
- */
