@@ -94,7 +94,6 @@ public:
 
     int getGoalAt(Player* player) { player->getGoal(); };
 
-
     // bouh cracra mais tmp
     Point2D intersection;
 

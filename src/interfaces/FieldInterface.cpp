@@ -15,6 +15,29 @@ void FieldInterface::handleEvents()
         if (field->getFocusedPlayer()->isPlayerShooting()) {
             field->shootOfPlayer(field->getFocusedPlayer(), field->getPositionClick());
         }
+        else {
+            if (field->getFocusedPlayer()->getGoal() != 0) {
+                if (field->getFocusedPlayer()->getGoal() == 1) {
+                    field->incrementLeftTeamScore();
+                }
+                else if (field->getFocusedPlayer()->getGoal() == 2) {
+                    field->incrementRightTeamScore();
+                }
+
+                field->updateTextOverlay();
+                field->playersReactionWhenGoal(field->getFocusedPlayer()->getGoal());
+                render();
+
+                SDL_Delay(3000);
+
+                field->resetPlayersReactions();
+                field->resetBallPosition();
+                field->loadPlayersPattern();
+                field->getFocusedPlayer()->setGoal(0);
+            }
+        }
+        // std::cout << " goal : " << field->getGoalAt(field->getFocusedPlayer()) << std::endl;
+        //        }
 
         float distance = field->getFocusedPlayer()->getPosition().getDistance(field->getPositionMouse());
         switch (event.type) {
@@ -35,11 +58,6 @@ void FieldInterface::handleEvents()
     case SDL_QUIT:
         game->setRunning(false);
         break;
-
-        //    case SDL_MOUSEBUTTONUP:
-        //        field->setPositionClick(event.button.x, event.button.y);
-        //        field->intersectBallOfPlayer(0, field->getPositionClick());
-        //        break;
 
     case SDL_MOUSEBUTTONDOWN:
         if (field->getFocusedPlayer() == nullptr) {
@@ -81,9 +99,9 @@ void FieldInterface::render()
     SDL_RenderClear(Game::renderer);
 
     field->draw();
-    //    if (goal != 0) {
-    //        field->drawGoalText();
-    //    }
+    if (field->getFocusedPlayer() != nullptr && field->getFocusedPlayer()->getGoal() != 0) {
+        field->drawGoalText();
+    }
 
     SDL_RenderPresent(Game::renderer);
 }
