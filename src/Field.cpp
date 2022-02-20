@@ -59,7 +59,7 @@ void Field::initRect()
     dstFace1.h = srcFace1.h = dstFace2.h = srcFace2.h = PLAYERS_FACE_H;
     srcFace1.x = srcFace1.y = srcFace2.x = 0;
     dstFace1.y = dstFace2.y = Game::WINDOW_HEIGHT - PLAYERS_FACE_H;
-    srcFace2.y = PLAYERS_FACE_H;
+    srcFace2.y              = PLAYERS_FACE_H;
 
     dstArrow.h = 20;
 }
@@ -108,7 +108,7 @@ void Field::loadOverlay()
     goalText = new Text();
     goalText->create("GOAL !!!!!", WhiteColor, "Press");
     goalText->changeFont("Press", 40);
-    goalText->changeDestRect(Game::WINDOW_WIDTH / 2 - goalText->getDestRect().w , Game::WINDOW_HEIGHT / 2 - goalText->getDestRect().h);
+    goalText->changeDestRect(Game::WINDOW_WIDTH / 2 - goalText->getDestRect().w, Game::WINDOW_HEIGHT / 2 - goalText->getDestRect().h);
 }
 
 /**
@@ -213,7 +213,7 @@ void Field::drawGoals()
  */
 void Field::drawOverlay()
 {
-    int gap = 100;
+    int gap    = 100;
     int center = (Game::WINDOW_WIDTH / 2 - PLAYERS_FACE_W / 2);
     SDL_SetRenderDrawColor(Game::renderer, 220, 195, 60, 255);
     SDL_RenderFillRect(Game::renderer, &overlayRect);
@@ -272,7 +272,8 @@ void Field::playersReactionWhenGoal(int playerWhoGoal)
     if (playerWhoGoal == 1) {
         srcFace1.x = PLAYERS_FACE_W;
         srcFace2.x = PLAYERS_FACE_W * 2;
-    } else {
+    }
+    else {
         srcFace1.x = PLAYERS_FACE_W * 2;
         srcFace2.x = PLAYERS_FACE_W;
     }
