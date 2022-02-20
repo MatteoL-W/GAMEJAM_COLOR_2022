@@ -15,29 +15,6 @@ void FieldInterface::handleEvents()
         if (field->getFocusedPlayer()->isPlayerShooting()) {
             field->shootOfPlayer(field->getFocusedPlayer(), field->getPositionClick());
         }
-        else {
-            if (field->getFocusedPlayer()->getGoal() != 0) {
-                if (field->getFocusedPlayer()->getGoal() == 1) {
-                    field->incrementLeftTeamScore();
-                }
-                else if (field->getFocusedPlayer()->getGoal() == 2) {
-                    field->incrementRightTeamScore();
-                }
-
-                field->updateTextOverlay();
-                field->playersReactionWhenGoal(field->getFocusedPlayer()->getGoal());
-                render();
-
-                SDL_Delay(3000);
-
-                field->resetPlayersReactions();
-                field->resetBallPosition();
-                field->loadPlayersPattern();
-                field->getFocusedPlayer()->setGoal(0);
-            }
-        }
-        // std::cout << " goal : " << field->getGoalAt(field->getFocusedPlayer()) << std::endl;
-        //        }
 
         float distance = field->getFocusedPlayer()->getPosition().getDistance(field->getPositionMouse());
         switch (event.type) {
@@ -78,6 +55,26 @@ void FieldInterface::handleEvents()
     }
 
     if (field->getFocusedPlayer() != nullptr && field->getFocusedPlayer()->getSpeed() == 0) {
+        if (field->getFocusedPlayer()->getGoal() != 0) {
+            std::cout << field->getFocusedPlayer()->getGoal() << std::endl << std::endl;
+            if (field->getFocusedPlayer()->getGoal() == 1) {
+                field->incrementLeftTeamScore();
+            }
+            else if (field->getFocusedPlayer()->getGoal() == 2) {
+                field->incrementRightTeamScore();
+            }
+
+            field->updateTextOverlay();
+            field->playersReactionWhenGoal(field->getFocusedPlayer()->getGoal());
+            render();
+
+            SDL_Delay(3000);
+
+            field->resetPlayersReactions();
+            field->resetBallPosition();
+            field->loadPlayersPattern();
+            field->getFocusedPlayer()->setGoal(0);
+        }
         field->touchesBallNot();
         field->setFocusedPlayer(nullptr);
     }

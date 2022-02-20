@@ -75,8 +75,8 @@ void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, s
                         std::cout << "goal team 1" << std::endl;
                     }
                 }
-                stopShooting();
                 this->changeSpeed(0);
+                stopShooting();
             }
             // else{
             //     if
