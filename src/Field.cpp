@@ -239,8 +239,6 @@ void Field::drawArrow()
     float distance = playerPos.getDistance(positionMouse);
     int   angle    = std::atan2(positionMouse.getY() - playerPos.getY(), positionMouse.getX() - playerPos.getX()) * (180 / M_PI);
 
-    std::cout << angle << std::endl;
-
     dstArrow.w = (distance > 150) ? 150 : distance;
     dstArrow.h = 20;
     dstArrow.x = playerPos.getX() - radius / 2 - dstArrow.w / 2;

@@ -10,8 +10,10 @@ void FieldInterface::handleEvents()
     SDL_PollEvent(&event);
 
     if (field->getFocusedPlayer() != nullptr) {
+        float distance = field->getFocusedPlayer()->getPosition().getDistance(field->getPositionMouse());
         switch (event.type) {
         case SDL_MOUSEBUTTONDOWN:
+            field->getFocusedPlayer()->changeSpeed(((distance > 150) ? 150 : distance) / 4.5);
             field->setFocusedPlayer(nullptr);
             break;
 

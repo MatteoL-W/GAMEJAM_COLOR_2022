@@ -51,6 +51,8 @@ public:
 
     void setPositionMouse(float x, float y) { positionMouse.setPoint(x, y); };
 
+    Point2D getPositionMouse() { return positionMouse; };
+
     std::vector<Player*> getPlayers() const { return players; };
 
     std::vector<Point2D*> getFieldLimits() const { return fieldLimits; };
