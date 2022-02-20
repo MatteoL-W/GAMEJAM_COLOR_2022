@@ -238,26 +238,45 @@ int intersectLine(const Point2D& position, const Point2D& direction, Point2D a, 
     float   x  = 2000;
     float   y  = 2000;
 
-    //cas 1, horizontal, cad a et b ont le même y et sont d'equation y=a.getY()
-    if (std::abs(a.getY() - b.getY()) < epsilon) {
-        if (std::abs(p1.getY() - p2.getY()) < epsilon) {
+    if (std::abs(p1.getX() - p2.getX()) < epsilon) {
+        if (std::abs(a.getX() - b.getX()) < epsilon) {
             return 0;
         }
-        float m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
-        float p = p1.getY() - p1.getX() * m;
-        y       = a.getY();
-        x       = (y - p) / m;
+        x = p1.getX();
+        y = a.getY();
+        std::cout << "x : " << x << " et y :" << y << std::endl;
+    }
+    else if (std::abs(p1.getY() - p2.getY()) < epsilon) {
+        if (std::abs(a.getY() - b.getY()) < epsilon) {
+            return 0;
+        }
+        y = p1.getY();
+        x = a.getX();
+        std::cout << "x : " << x << " et y :" << y << std::endl;
     }
 
-    //cas 2, vertical, cad a et b même x et d'équation x=a.getX();, c'est forcément le cas on a que des seg horizontaux ou verticaux
+    //cas 1, horizontal, cad a et b ont le même y et sont d'equation y=a.getY()
     else {
-        if (std::abs(p1.getX() - p2.getX()) < epsilon) {
-            return 0;
+        if (std::abs(a.getY() - b.getY()) < epsilon) {
+            if (std::abs(p1.getY() - p2.getY()) < epsilon) {
+                return 0;
+            }
+            float m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+            float p = p1.getY() - p1.getX() * m;
+            y       = a.getY();
+            x       = (y - p) / m;
         }
-        float m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
-        float p = p1.getY() - p1.getX() * m;
-        x       = a.getX();
-        y       = m * x + p;
+
+        //cas 2, vertical, cad a et b même x et d'équation x=a.getX();, c'est forcément le cas on a que des seg horizontaux ou verticaux
+        else {
+            if (std::abs(p1.getX() - p2.getX()) < epsilon) {
+                return 0;
+            }
+            float m = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+            float p = p1.getY() - p1.getX() * m;
+            x       = a.getX();
+            y       = m * x + p;
+        }
     }
 
     Point2D closestIntersection(x, y);
