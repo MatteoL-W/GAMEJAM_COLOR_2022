@@ -1,6 +1,9 @@
 #include "../../include/interfaces/FieldInterface.hpp"
 #include <SDL2/SDL.h>
 
+const float FORCE_FACTOR = 4.5;
+int goal = 0;
+
 /**
  * @brief Handle SDL Events in the menu
  */
@@ -13,7 +16,8 @@ void FieldInterface::handleEvents()
         float distance = field->getFocusedPlayer()->getPosition().getDistance(field->getPositionMouse());
         switch (event.type) {
         case SDL_MOUSEBUTTONDOWN:
-            field->getFocusedPlayer()->changeSpeed(((distance > 150) ? 150 : distance) / 4.5);
+            //intersect ball
+            field->getFocusedPlayer()->changeSpeed(((distance > 150) ? 150 : distance) / FORCE_FACTOR);
             field->setFocusedPlayer(nullptr);
             break;
 
@@ -46,6 +50,28 @@ void FieldInterface::handleEvents()
         field->setPositionClick(event.button.x, event.button.y);
         break;
     }
+
+    //if is shooting, call shoot function
+    //else, field->verifGoalAt(player), if goal == 0, pas de but, si goal == 1, but à gauche, sinon but à droite
+    if (goal != 0) {
+        if (goal == 1) {
+            field->incrementLeftTeamScore();
+        } else if (goal == 2) {
+            field->incrementRightTeamScore();
+        }
+
+        field->updateTextOverlay();
+        field->playersReactionWhenGoal(goal);
+        render();
+
+        SDL_Delay(3000);
+
+        field->resetPlayersReactions();
+        field->resetBallPosition();
+        field->loadPlayersPattern();
+        goal = 0;
+    }
+
 }
 
 /**
@@ -64,6 +90,9 @@ void FieldInterface::render()
     SDL_RenderClear(Game::renderer);
 
     field->draw();
+    if (goal != 0) {
+        field->drawGoalText();
+    }
 
     SDL_RenderPresent(Game::renderer);
 }
