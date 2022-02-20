@@ -11,6 +11,16 @@ void FieldInterface::handleEvents()
     SDL_Event event = game->getEvent();
     SDL_PollEvent(&event);
 
+    if (event.type == SDL_KEYDOWN) {
+        if (event.key.keysym.sym == SDLK_r) {
+            field->resetPlayersReactions();
+            field->resetBallPosition();
+            field->loadPlayersPattern();
+            field->touchesBallNot();
+            field->setFocusedPlayer(nullptr);
+        }
+    }
+
     if (field->getFocusedPlayer() != nullptr) {
         if (field->getFocusedPlayer()->isPlayerShooting()) {
             field->shootOfPlayer(field->getFocusedPlayer(), field->getPositionClick());
