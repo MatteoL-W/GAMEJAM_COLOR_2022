@@ -23,6 +23,8 @@ public:
 
     static SDL_Renderer* renderer;
 
+    void setInterfaceToField();
+
     void setRunning(bool newState) { isRunning = newState; }
 
     bool running() const { return isRunning; };
@@ -30,6 +32,8 @@ public:
     Interface* getCurrentInterface() { return currentInterface; };
 
     SDL_Event getEvent() const { return event; };
+
+    int getWinner() { return winner; };
 
 private:
     SDL_Window* window;
@@ -39,4 +43,6 @@ private:
     Interface* currentInterface;
 
     SDL_Event event;
+
+    int winner = 0;
 };

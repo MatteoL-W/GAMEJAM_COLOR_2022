@@ -23,4 +23,6 @@ private:
     Game* game;
 
     Menu* menu;
+
+    bool inHome = true;
 };
