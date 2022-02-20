@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 
 const float FORCE_FACTOR = 4.5;
-int roundIndex = 0;
+int         roundIndex   = 0;
 
 /**
  * @brief Handle SDL Events in the menu
@@ -13,12 +13,18 @@ void FieldInterface::handleEvents()
     SDL_PollEvent(&event);
 
     if (event.type == SDL_KEYDOWN) {
-        if (event.key.keysym.sym == SDLK_r) {
+        switch (event.key.keysym.sym) {
+        case SDLK_r:
             field->resetPlayersReactions();
             field->resetBallPosition();
             field->loadPlayersPattern();
             field->touchesBallNot();
             field->setFocusedPlayer(nullptr);
+        case SDLK_ESCAPE:
+            if (field->getFocusedPlayer() != nullptr) {
+                field->setFocusedPlayer(nullptr);
+                roundIndex--;
+            }
         }
     }
 
