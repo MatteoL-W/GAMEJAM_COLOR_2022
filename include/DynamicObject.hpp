@@ -37,7 +37,7 @@ public:
     void move(Point2D newPosition)
     {
         this->position = newPosition;
-        //decelerate();
+        decelerate();
     }
 
     void setPosition(Point2D newPosition) { position = newPosition; };

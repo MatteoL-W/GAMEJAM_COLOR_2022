@@ -71,6 +71,15 @@ public:
 
     void incrementRightTeamScore() { rightTeamScore++; };
 
+    int hasAWinner() {
+        if (leftTeamScore >= 3) {
+            return 1;
+        } else if (rightTeamScore >= 3) {
+            return 2;
+        }
+        return 0;
+    };
+
     void updateTextOverlay();
 
     void playersReactionWhenGoal(int playerWhoGoal);

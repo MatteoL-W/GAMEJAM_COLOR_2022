@@ -35,6 +35,10 @@ public:
 
     int getWinner() { return winner; };
 
+    void setWinner(int idWinner) { winner = idWinner; };
+
+    void endGame();
+
 private:
     SDL_Window* window;
 

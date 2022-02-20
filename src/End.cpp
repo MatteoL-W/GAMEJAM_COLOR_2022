@@ -22,5 +22,5 @@ void End::update()
  */
 void End::draw(int winnerNb)
 {
-    SDL_RenderCopy(Game::renderer, ends[winnerNb], nullptr, nullptr);
+    SDL_RenderCopy(Game::renderer, ends[winnerNb - 1], nullptr, nullptr);
 }

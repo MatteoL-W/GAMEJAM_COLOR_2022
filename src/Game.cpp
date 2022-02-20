@@ -78,3 +78,11 @@ void Game::setInterfaceToField()
 {
     currentInterface = fieldInterface;
 }
+
+/**
+ * @brief Set the interface to field
+ */
+void Game::endGame()
+{
+    currentInterface = endInterface;
+}
