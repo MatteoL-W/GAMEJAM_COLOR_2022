@@ -25,7 +25,7 @@ void FieldInterface::handleEvents()
     }
 
     if (field->isPlayerShootingAt(0)) {
-        field->shootOfPlayer(0, direction);
+        field->shootOfPlayer(0, direction, field->getPositionClick());
     }
 }
 

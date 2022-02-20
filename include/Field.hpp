@@ -63,7 +63,7 @@ public:
             touchesBall = true;
     };
 
-    void shootOfPlayer(int i, Point2D const& direction) { players[i]->shoot(*ball, touchesBall, players, fieldLimits, intersection, direction); };
+    void shootOfPlayer(int i, Point2D const& direction, const Point2D& positionClick) { players[i]->shoot(positionClick, *ball, touchesBall, players, fieldLimits, intersection, direction); };
 
     bool isPlayerShootingAt(int i) { players[i]->isPlayerShooting(); };
 
