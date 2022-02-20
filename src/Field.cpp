@@ -1,5 +1,6 @@
 #include "../include/Field.hpp"
 #include <SDL2/SDL_image.h>
+#include <cmath>
 #include "../include/Random.hpp"
 #include "../include/Utils.hpp"
 #include "../include/variables/Color.hpp"
@@ -29,6 +30,7 @@ void Field::loadAssets()
     fieldTexture       = IMG_LoadTexture(Game::renderer, "assets/images/field.png");
     playersTexture     = IMG_LoadTexture(Game::renderer, "assets/images/sprite_players.png");
     playersFaceTexture = IMG_LoadTexture(Game::renderer, "assets/images/sprite_players_face.png");
+    arrowTexture       = IMG_LoadTexture(Game::renderer, "assets/images/arrow.png");
 }
 
 /**
@@ -44,7 +46,6 @@ void Field::initRect()
 
     dstPlayers.w = DST_PLAYERS_DIMENSIONS_W;
     dstPlayers.h = DST_PLAYERS_DIMENSIONS_H;
-
     dstBall.w = dstBall.h = BALL_RADIUS;
 
     dstGoal.w = dstGoal.h = CONE_RADIUS;
@@ -54,8 +55,13 @@ void Field::initRect()
     overlayRect.x = getPadding(Game::WINDOW_WIDTH, 315);
     overlayRect.y = Game::WINDOW_HEIGHT - 90;
 
-    dstFace.w = srcFace.w = PLAYERS_FACE_W;
-    dstFace.h = srcFace.h = PLAYERS_FACE_H;
+    dstFace1.w = srcFace1.w = dstFace2.w = srcFace2.w = PLAYERS_FACE_W;
+    dstFace1.h = srcFace1.h = dstFace2.h = srcFace2.h = PLAYERS_FACE_H;
+    srcFace1.x = srcFace1.y = srcFace2.x = 0;
+    dstFace1.y = dstFace2.y = Game::WINDOW_HEIGHT - PLAYERS_FACE_H;
+    srcFace2.y = PLAYERS_FACE_H;
+
+    dstArrow.h = 20;
 }
 
 /**
@@ -98,6 +104,11 @@ void Field::loadOverlay()
     rightTeamScoreText = new Text();
     rightTeamScoreText->create(std::to_string(rightTeamScore), WhiteColor, "Press");
     rightTeamScoreText->changeDestRect(Game::WINDOW_WIDTH / 2 + 40, Game::WINDOW_HEIGHT - 50);
+
+    goalText = new Text();
+    goalText->create("GOAL !!!!!", WhiteColor, "Press");
+    goalText->changeFont("Press", 40);
+    goalText->changeDestRect(Game::WINDOW_WIDTH / 2 - goalText->getDestRect().w , Game::WINDOW_HEIGHT / 2 - goalText->getDestRect().h);
 }
 
 /**
@@ -152,6 +163,10 @@ void Field::draw()
     drawGoals();
 
     drawOverlay();
+
+    if (focusOn != nullptr) {
+        drawArrow();
+    }
 }
 
 /**
@@ -177,6 +192,9 @@ void Field::drawBall()
     SDL_RenderCopy(Game::renderer, ballTexture, nullptr, &dstBall);
 }
 
+/**
+ * @brief Draw the cones
+ */
 void Field::drawGoals()
 {
     for (int i = 0; i < 2; i++) {
@@ -190,21 +208,72 @@ void Field::drawGoals()
     }
 }
 
+/**
+ * @brief Draw the score
+ */
 void Field::drawOverlay()
 {
     int gap = 100;
+    int center = (Game::WINDOW_WIDTH / 2 - PLAYERS_FACE_W / 2);
     SDL_SetRenderDrawColor(Game::renderer, 220, 195, 60, 255);
     SDL_RenderFillRect(Game::renderer, &overlayRect);
 
-    dstFace.x = (Game::WINDOW_WIDTH / 2 - PLAYERS_FACE_W / 2) - gap;
-    dstFace.y = Game::WINDOW_HEIGHT - PLAYERS_FACE_H;
-    srcFace.x = srcFace.y = 0;
-    SDL_RenderCopy(Game::renderer, playersFaceTexture, &srcFace, &dstFace);
+    dstFace1.x = center - gap;
+    SDL_RenderCopy(Game::renderer, playersFaceTexture, &srcFace1, &dstFace1);
 
-    dstFace.x += gap * 2;
-    srcFace.y = PLAYERS_FACE_H;
-    SDL_RenderCopy(Game::renderer, playersFaceTexture, &srcFace, &dstFace);
+    dstFace2.x = center + gap;
+    srcFace2.y = PLAYERS_FACE_H;
+    SDL_RenderCopy(Game::renderer, playersFaceTexture, &srcFace2, &dstFace2);
 
     rightTeamScoreText->draw();
     leftTeamScoreText->draw();
+}
+
+/**
+ * @brief Draw the directional arrow
+ */
+void Field::drawArrow()
+{
+    int     radius    = focusOn->getRadius();
+    Point2D playerPos = focusOn->getPosition();
+
+    SDL_RendererFlip arrowFlip = SDL_FLIP_NONE;
+    SDL_Point        playerPoint;
+
+    float distance = playerPos.getDistance(positionMouse);
+    int   angle    = std::atan2(positionMouse.getY() - playerPos.getY(), positionMouse.getX() - playerPos.getX()) * (180 / M_PI);
+
+    dstArrow.w = (distance > 150) ? 150 : distance;
+    dstArrow.h = 20;
+    dstArrow.x = playerPos.getX() - radius / 2 - dstArrow.w / 2;
+    dstArrow.y = playerPos.getY() - dstArrow.h / 2;
+
+    playerPoint.x = dstArrow.w / 2;
+    playerPoint.y = dstArrow.h / 2;
+
+    SDL_RenderCopyEx(Game::renderer, arrowTexture, nullptr, &dstArrow, angle, &playerPoint, arrowFlip);
+}
+
+/**
+ * @brief Refresh the score
+ */
+void Field::updateTextOverlay()
+{
+    leftTeamScoreText->changeText(std::to_string(leftTeamScore));
+    rightTeamScoreText->changeText(std::to_string(rightTeamScore));
+}
+
+/**
+ * @brief Makes players react to the goal
+ * @param playerWhoGoal
+ */
+void Field::playersReactionWhenGoal(int playerWhoGoal)
+{
+    if (playerWhoGoal == 1) {
+        srcFace1.x = PLAYERS_FACE_W;
+        srcFace2.x = PLAYERS_FACE_W * 2;
+    } else {
+        srcFace1.x = PLAYERS_FACE_W * 2;
+        srcFace2.x = PLAYERS_FACE_W;
+    }
 }

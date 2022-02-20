@@ -10,7 +10,7 @@ const int SRC_PLAYERS_DIMENSIONS_W = 32;
 const int SRC_PLAYERS_DIMENSIONS_H = 44;
 const int DST_PLAYERS_DIMENSIONS_W = 46;
 const int DST_PLAYERS_DIMENSIONS_H = 64;
-const int PLAYERS_FACE_W           = 64;
+const int PLAYERS_FACE_W           = 60;
 const int PLAYERS_FACE_H           = 85;
 const int BALL_RADIUS              = 32;
 const int CONE_RADIUS              = 40;
@@ -45,15 +45,37 @@ public:
 
     void drawOverlay();
 
+    void drawArrow();
+
+    void drawGoalText() { goalText->draw(); };
+
     void setPositionClick(float x, float y) { positionClick.setPoint(x, y); };
 
     Point2D getPositionClick() const { return positionClick; };
 
     std::vector<Player*> getPlayers() const { return players; };
 
+    void setPositionMouse(float x, float y) { positionMouse.setPoint(x, y); };
+
+    Point2D getPositionMouse() { return positionMouse; };
+
     std::vector<Point2D*> getFieldLimits() const { return fieldLimits; };
 
     Ball* getBall() const { return ball; };
+
+    Player* getFocusedPlayer() { return focusOn; };
+
+    void setFocusedPlayer(Player* player) { focusOn = player; };
+
+    void incrementLeftTeamScore() { leftTeamScore++; };
+
+    void incrementRightTeamScore() { rightTeamScore++; };
+
+    void updateTextOverlay();
+
+    void playersReactionWhenGoal(int playerWhoGoal);
+
+    void resetPlayersReactions() { srcFace2.x = srcFace1.x = 0; };
 
     Player getPlayerAt(int i) const { return *(players[i]); };
 
@@ -68,29 +90,31 @@ public:
 
     bool isPlayerShootingAt(int i) { players[i]->isPlayerShooting(); };
 
-    int getGoalAt(int i) { players[i]->getGoal(); };
+    int getGoalAt(Player* player) { player->getGoal(); };
 
     //bouh cracra mais tmp
     Point2D intersection;
 
 private:
-    SDL_Texture *playersTexture, *fieldTexture, *ballTexture, *blueCone, *yellowCone, *playersFaceTexture;
+    SDL_Texture *playersTexture, *fieldTexture, *ballTexture, *blueCone, *yellowCone, *playersFaceTexture, *arrowTexture;
 
-    SDL_Rect dstPlayers, srcPlayers, dstBall, dstGoal, overlayRect, srcFace, dstFace;
+    SDL_Rect dstPlayers, srcPlayers, dstBall, dstGoal, overlayRect, srcFace1, dstFace1, srcFace2, dstFace2, dstArrow;
 
-    Point2D positionClick;
+    Point2D positionClick, positionMouse;
 
     std::vector<Player*> players;
 
     std::vector<Point2D*> fieldLimits;
 
-    Ball* ball;
+    Ball*                 ball;
 
     std::vector<std::pair<Point2D*, Point2D*>> goals;
 
     int leftTeamScore = 0, rightTeamScore = 0;
 
-    Text *leftTeamScoreText, *rightTeamScoreText;
+    Text *leftTeamScoreText, *rightTeamScoreText, *goalText;
+
+    Player* focusOn = nullptr;
 
     bool touchesBall;
 };
