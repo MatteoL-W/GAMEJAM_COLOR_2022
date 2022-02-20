@@ -225,6 +225,9 @@ void Field::drawOverlay()
     leftTeamScoreText->draw();
 }
 
+/**
+ * @brief Draw the directional arrow
+ */
 void Field::drawArrow()
 {
     int     radius    = focusOn->getRadius();
@@ -233,9 +236,9 @@ void Field::drawArrow()
     SDL_RendererFlip arrowFlip = SDL_FLIP_NONE;
     SDL_Point        playerPoint;
 
-    float distance         = playerPos.getDistance(positionMouse);
-    float heightDifference = positionMouse.getY() - playerPos.getY();
-    int   angle            = std::atan(heightDifference / distance) * (180 / M_PI);
+    float distance = playerPos.getDistance(positionMouse);
+    int   angle    = std::atan2(positionMouse.getY() - playerPos.getY(), positionMouse.getX() - playerPos.getX()) * (180 / M_PI);
+
     std::cout << angle << std::endl;
 
     dstArrow.w = (distance > 150) ? 150 : distance;
