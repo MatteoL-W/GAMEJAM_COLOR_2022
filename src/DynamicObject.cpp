@@ -58,3 +58,28 @@ void nearestIntersection(const Point2D& positionClick, DynamicObject& currentObj
         intersection = currentObject.getIntersectionFieldLimits();
     }
 }
+
+Point2D getNormal(Point2D intersection)
+{
+    Point2D normal;
+    if (intersection.getX() == Game::xPadding) {
+        normal.setPoint(1, 0);
+    }
+    else if (intersection.getX() == Game::WINDOW_WIDTH - Game::xPadding) {
+        normal.setPoint(-1, 0);
+    }
+    else if (intersection.getY() == Game::yPadding) {
+        normal.setPoint(0, 1);
+    }
+    else {
+        normal.setPoint(0, -1);
+    }
+    return normal;
+}
+
+Point2D getReflection(Point2D intersection, Point2D direction)
+{
+    Point2D normal     = getNormal(intersection);
+    Point2D reflection = direction - normal * (dot(direction, normal) * 2);
+    return reflection;
+}

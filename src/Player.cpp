@@ -3,11 +3,12 @@
 bool Player::intersectBall(const Point2D& positionClick, Ball& ball, std::vector<Player*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection)
 {
     playerShoots();
+    notRebounding();
     intersection.setPoint(2000, 2000);
     this->setIntersectionBall(2000, 2000);
-    std::vector<DynamicObject*> playersDynamic;
     this->setDirectionPlayer(this->getPosition().getDirection(positionClick));
     this->setDirectionPlayer(this->getDirectionPlayer());
+    std::vector<DynamicObject*> playersDynamic;
     for (int i = 0; i < 8; i++) {
         playersDynamic.push_back(players[i]);
     }
@@ -58,7 +59,6 @@ void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, s
         else {
             this->changeSpeed(0);
             float distance = ball.getPosition().getDistance(this->getIntersectionBall());
-            std::cout << "distance : " << distance << std::endl;
             ball.getPosition().print();
             this->getIntersectionBall().print();
             if (!(this->getIntersectionBall() == ball.getIntersectionFieldLimits())) {
@@ -77,6 +77,11 @@ void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, s
                     }
                     else {
                         //rajouter test pour savoir quel but
+                        std::cout << "distance : " << distance << " et is looking dir : ";
+                        direction.print();
+                        std::cout << " at intersect : ";
+                        this->getIntersectionBall().print();
+                        std::cout << std::endl;
                         stopShooting();
                     }
                     std::cout << "marque un goooal" << std::endl;
@@ -86,7 +91,30 @@ void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, s
                         ball.move(ball.getPosition() + direction * ball.getSpeed());
                     }
                     else {
+                        std::cout << "distance : " << distance << " et is looking dir : ";
+                        direction.print();
+                        std::cout << " at intersect : ";
+                        this->getIntersectionBall().print();
+                        std::cout << std::endl;
+                        if (!rebound) {
+                            std::cout << rebound << std::endl;
+                            std::vector<DynamicObject*> playersDynamic;
+                            Point2D                     tmpIntersection;
+                            for (int i = 0; i < 8; i++) {
+                                playersDynamic.push_back(players[i]);
+                            }
+                            this->setDirectionBallRebound(this->getIntersectionBall());
+                            nearestIntersection(ball.getPosition() + this->getDirectionBallRebound() * 30., ball, playersDynamic, fieldLimits, tmpIntersection);
+                            this->setIntersectionBall(tmpIntersection);
+                        }
+                        //float distance = ball.getPosition().getDistance(this->getIntersectionBall());
+                        //if (ball.getSpeed() > 0 && distance > 40 && isLooking(ball.getPosition(), directionBall, this->getIntersectionBall())) {
+                        this->getDirectionBallRebound().print();
+                        ball.move(ball.getPosition() + this->getDirectionBallRebound() * 100);
+                        //}
+                        //else {
                         stopShooting();
+                        //}
                     }
                     std::cout << "touche les murs là " << std::endl;
                 }

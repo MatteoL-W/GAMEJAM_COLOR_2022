@@ -18,6 +18,9 @@ public:
 
     static const int WINDOW_HEIGHT = 750;
 
+    static const int xPadding = 58;
+    static const int yPadding = 42;
+
     static SDL_Renderer* renderer;
 
     void setRunning(bool newState) { isRunning = newState; }

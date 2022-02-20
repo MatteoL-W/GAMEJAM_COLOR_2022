@@ -4,9 +4,6 @@
 #include "../include/Utils.hpp"
 #include "../include/variables/Color.hpp"
 
-const int xPadding = 58;
-const int yPadding = 42;
-
 Field::Field()
 {
     loadAssets();
@@ -67,10 +64,10 @@ void Field::initRect()
 void Field::initVectors()
 {
     // Limit Fields
-    fieldLimits.push_back(new Point2D(xPadding, yPadding));
-    fieldLimits.push_back(new Point2D(Game::WINDOW_WIDTH - xPadding, yPadding));
-    fieldLimits.push_back(new Point2D(Game::WINDOW_WIDTH - xPadding, Game::WINDOW_HEIGHT - yPadding));
-    fieldLimits.push_back(new Point2D(xPadding, Game::WINDOW_HEIGHT - yPadding));
+    fieldLimits.push_back(new Point2D(Game::xPadding, Game::yPadding));
+    fieldLimits.push_back(new Point2D(Game::WINDOW_WIDTH - Game::xPadding, Game::yPadding));
+    fieldLimits.push_back(new Point2D(Game::WINDOW_WIDTH - Game::xPadding, Game::WINDOW_HEIGHT - Game::yPadding));
+    fieldLimits.push_back(new Point2D(Game::xPadding, Game::WINDOW_HEIGHT - Game::yPadding));
 
     // Players
     for (int i = 0; i < 8; i++) {
@@ -80,12 +77,12 @@ void Field::initVectors()
     // Goals
     int                           goalGap = 100;
     std::pair<Point2D*, Point2D*> tempGoal;
-    tempGoal.first  = new Point2D(xPadding, (Game::WINDOW_HEIGHT / 2) - goalGap);
-    tempGoal.second = new Point2D(xPadding, (Game::WINDOW_HEIGHT / 2) + goalGap);
+    tempGoal.first  = new Point2D(Game::xPadding, (Game::WINDOW_HEIGHT / 2) - goalGap);
+    tempGoal.second = new Point2D(Game::xPadding, (Game::WINDOW_HEIGHT / 2) + goalGap);
     goals.push_back(tempGoal);
 
-    tempGoal.first  = new Point2D(Game::WINDOW_WIDTH - xPadding, (Game::WINDOW_HEIGHT / 2) - goalGap);
-    tempGoal.second = new Point2D(Game::WINDOW_WIDTH - xPadding, (Game::WINDOW_HEIGHT / 2) + goalGap);
+    tempGoal.first  = new Point2D(Game::WINDOW_WIDTH - Game::xPadding, (Game::WINDOW_HEIGHT / 2) - goalGap);
+    tempGoal.second = new Point2D(Game::WINDOW_WIDTH - Game::xPadding, (Game::WINDOW_HEIGHT / 2) + goalGap);
     goals.push_back(tempGoal);
 }
 
@@ -113,16 +110,16 @@ void Field::loadPlayersPattern()
         if (i < 4) {
             players[i]->setPosition(Point2D(
                 randomUniformDistribution(
-                    xPadding + radius,
+                    Game::xPadding + radius,
                     Game::WINDOW_WIDTH / 2 - 110),
-                (yPadding + radius + 20) + i * (Game::WINDOW_HEIGHT / 4)));
+                (Game::yPadding + radius + 20) + i * (Game::WINDOW_HEIGHT / 4)));
         }
         else {
             players[i]->setPosition(Point2D(
                 randomUniformDistribution(
-                    xPadding + radius + Game::WINDOW_WIDTH / 2,
-                    Game::WINDOW_WIDTH - xPadding - radius),
-                (yPadding + radius + 20) + (i % 4) * (Game::WINDOW_HEIGHT / 4)));
+                    Game::xPadding + radius + Game::WINDOW_WIDTH / 2,
+                    Game::WINDOW_WIDTH - Game::xPadding - radius),
+                (Game::yPadding + radius + 20) + (i % 4) * (Game::WINDOW_HEIGHT / 4)));
         }
     }
 }

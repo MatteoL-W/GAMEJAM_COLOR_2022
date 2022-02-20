@@ -34,6 +34,23 @@ public:
     void    setDirectionBall(const Point2D& newIntersection) { directionBall = newIntersection; };
     void    setDirectionBall(const float& x, const float& y) { directionBall.setPoint(x, y); };
 
+    Point2D getDirectionBallRebound() const { return directionBallRebound; };
+    void    setDirectionBallRebound(const Point2D& newIntersection)
+    {
+        //directionBallRebound = getReflection(newIntersection, directionBall);
+        directionBallRebound = getNormal(newIntersection);
+        rebound              = true;
+    };
+    void setDirectionBallRebound(const float& x, const float& y)
+    {
+        Point2D intersection(x, y);
+        //directionBallRebound = getReflection(intersection, directionBall);
+        directionBallRebound = getNormal(intersection);
+        rebound              = true;
+    };
+
+    void notRebounding() { rebound = false; };
+
 private:
     bool collision;
 
@@ -45,4 +62,8 @@ private:
 
     Point2D directionPlayer;
     Point2D directionBall;
+
+    Point2D directionBallRebound;
+
+    bool rebound;
 };

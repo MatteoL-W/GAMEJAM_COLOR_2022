@@ -75,3 +75,6 @@ void nearestIntersectionPlayers(const Point2D& positionClick, DynamicObject& cur
 void nearestIntersectionFieldLimits(const Point2D& positionClick, DynamicObject& currentObject, std::vector<Point2D*> fieldLimits);
 
 void nearestIntersection(const Point2D& positionClick, DynamicObject& currentObject, std::vector<DynamicObject*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection);
+
+Point2D getNormal(Point2D intersection);
+Point2D getReflection(Point2D intersection, Point2D direction);
