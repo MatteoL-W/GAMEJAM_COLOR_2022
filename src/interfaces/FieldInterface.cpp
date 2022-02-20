@@ -55,9 +55,8 @@ void FieldInterface::handleEvents()
     }
 
     if (field->getFocusedPlayer() != nullptr && field->getFocusedPlayer()->getSpeed() == 0) {
+        std::cout << "test !!! " << std::endl;
         if (field->getFocusedPlayer()->getGoal() != 0) {
-            std::cout << field->getFocusedPlayer()->getGoal() << std::endl
-                      << std::endl;
             if (field->getFocusedPlayer()->getGoal() == 1) {
                 field->incrementLeftTeamScore();
             }

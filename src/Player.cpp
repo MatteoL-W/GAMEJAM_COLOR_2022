@@ -2,6 +2,7 @@
 
 bool Player::intersectBall(const Point2D& positionClick, Ball& ball, std::vector<Player*> players, std::vector<Point2D*> fieldLimits, Point2D& intersection)
 {
+    ball.changeSpeed(20);
     playerShoots();
     notRebounding();
     noGoalYet();
@@ -45,7 +46,7 @@ void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, s
     Point2D directionBall = this->getDirectionBall();
     if (!touchesBall) {
         float distance = this->getPosition().getDistance(intersection);
-        if (this->getSpeed() > 0 && distance > 40) {
+        if (this->getSpeed() > 0.1 && distance > 40) {
             this->move(this->getPosition() + direction * this->getSpeed());
         }
         else {
@@ -54,18 +55,22 @@ void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, s
     }
     else {
         float distance = this->getPosition().getDistance(intersection);
-        if (this->getSpeed() > 0 && distance > 50) {
+        if (this->getSpeed() > 0.1 && distance > 50) {
             this->move(this->getPosition() + direction * this->getSpeed());
         }
         else {
             float distance = ball.getPosition().getDistance(this->getIntersectionBall());
-            ball.getPosition().print();
-            this->getIntersectionBall().print();
-            if (ball.getSpeed() > 0 && distance > 40 && isLooking(ball.getPosition(), directionBall, this->getIntersectionBall())) {
+//            ball.getPosition().print();
+//            this->getIntersectionBall().print();
+            if (ball.getSpeed() > 0.1 && distance > 40 && isLooking(ball.getPosition(), directionBall, this->getIntersectionBall())) {
                 ball.move(ball.getPosition() + direction * ball.getSpeed());
             }
             else {
-                if ((this->getIntersectionBall() == ball.getIntersectionFieldLimits()) && (this->getIntersectionBall().getY() >= (Game::WINDOW_HEIGHT / 2) - 100 && this->getIntersectionBall().getY() <= (Game::WINDOW_HEIGHT / 2) + 100)) {
+                if (
+                    ((std::abs(Game::xPadding - ball.getPosition().getX())<100 ) or (std::abs(Game::WINDOW_WIDTH-Game::xPadding - ball.getPosition().getX())<100))
+                    &&( this->getIntersectionBall() == ball.getIntersectionFieldLimits())
+                    && (this->getIntersectionBall().getY() >= (Game::WINDOW_HEIGHT / 2) - 100
+                        && this->getIntersectionBall().getY() <= (Game::WINDOW_HEIGHT / 2) + 100)) {
                     if (std::abs(this->getIntersectionBall().getX() - Game::xPadding) < 0.1) {
                         rightTeamScores();
                         std::cout << "goal team 2" << std::endl;
@@ -75,76 +80,8 @@ void Player::shoot(const Point2D& positionClick, Ball& ball, bool touchesBall, s
                         std::cout << "goal team 1" << std::endl;
                     }
                 }
-                this->changeSpeed(0);
                 stopShooting();
             }
-            // else{
-            //     if
-            // }
-            // if (!(this->getIntersectionBall() == ball.getIntersectionFieldLimits())) {
-            //     if (ball.getSpeed() > 0 && distance > 40 && isLooking(ball.getPosition(), directionBall, this->getIntersectionBall())) {
-            //         ball.move(ball.getPosition() + direction * ball.getSpeed());
-            //     }
-            //     else {
-            //         stopShooting();
-            //     }
-            //     std::cout << "touches player first" << std::endl;
-            // }
-            // else {
-            //     if (this->getIntersectionBall().getY() >= (Game::WINDOW_HEIGHT / 2) - 100 && this->getIntersectionBall().getY() <= (Game::WINDOW_HEIGHT / 2) + 100) {
-            //         if (ball.getSpeed() > 0 && distance > 40 && isLooking(ball.getPosition(), directionBall, this->getIntersectionBall())) {
-            //             ball.move(ball.getPosition() + direction * ball.getSpeed());
-            //         }
-            //         else {
-            //             if (this->getIntersectionBall().getX() == Game::xPadding) {
-            //                 leftTeamScores();
-            //             }
-            //             else {
-            //                 rightTeamScores();
-            //             }
-            //             //rajouter test pour savoir quel but
-            //             std::cout << "distance : " << distance << " et is looking dir : ";
-            //             direction.print();
-            //             std::cout << " at intersect : ";
-            //             this->getIntersectionBall().print();
-            //             std::cout << std::endl;
-            //             stopShooting();
-            //         }
-            //         std::cout << "marque un goooal" << std::endl;
-            //     }
-            //     else {
-            //         if (!rebound && ball.getSpeed() > 0 && distance > 40 && isLooking(ball.getPosition(), directionBall, this->getIntersectionBall())) {
-            //             ball.move(ball.getPosition() + direction * ball.getSpeed());
-            //         }
-            //         else {
-            //             std::cout << "distance : " << distance << " et is looking dir : ";
-            //             direction.print();
-            //             std::cout << " at intersect : ";
-            //             this->getIntersectionBall().print();
-            //             std::cout << std::endl;
-            //             if (!rebound) {
-            //                 std::cout << rebound << std::endl;
-            //                 std::vector<DynamicObject*> playersDynamic;
-            //                 Point2D                     tmpIntersection;
-            //                 for (int i = 0; i < 8; i++) {
-            //                     playersDynamic.push_back(players[i]);
-            //                 }
-            //                 this->setDirectionBallRebound(this->getIntersectionBall());
-            //                 nearestIntersection(ball.getPosition() + this->getDirectionBallRebound() * 30., ball, playersDynamic, fieldLimits, tmpIntersection);
-            //                 this->setIntersectionBall(tmpIntersection);
-            //             }
-            //             //float distance = ball.getPosition().getDistance(this->getIntersectionBall());
-            //             //if (ball.getSpeed() > 0 && distance > 40 && isLooking(ball.getPosition(), directionBall, this->getIntersectionBall())) {
-            //             this->getDirectionBallRebound().print();
-            //             ball.move(ball.getPosition() + this->getDirectionBallRebound() * 100);
-            //             //}
-            //             //else {
-            //             stopShooting();
-            //             //}
-            //         }
-            //         std::cout << "touche les murs là " << std::endl;
-            //     }
-            // }
         }
     }
 }
