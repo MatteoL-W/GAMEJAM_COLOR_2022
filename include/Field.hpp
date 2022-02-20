@@ -59,11 +59,12 @@ public:
 
     void intersectBallOfPlayer(int i, const Point2D& positionClick)
     {
+        touchesBall = false;
         if (players[i]->intersectBall(positionClick, *ball, players, fieldLimits, intersection))
             touchesBall = true;
     };
 
-    void shootOfPlayer(int i, Point2D const& direction, const Point2D& positionClick) { players[i]->shoot(positionClick, *ball, touchesBall, players, fieldLimits, intersection, direction); };
+    void shootOfPlayer(int i, const Point2D& positionClick) { players[i]->shoot(positionClick, *ball, touchesBall, players, fieldLimits, intersection); };
 
     bool isPlayerShootingAt(int i) { players[i]->isPlayerShooting(); };
 
