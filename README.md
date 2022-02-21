@@ -1,11 +1,12 @@
 # GameJam Color project (18 - 19 febr.)
-### by [Mattéo Leclercq](https://github.com/MatteoL-W/) and [Yaëlle Saralegui-Tran](https://github.com/yaelleainhoa)
+### Made in 48h by [Yaëlle Saralegui-Tran](https://github.com/yaelleainhoa) and [Mattéo Leclercq](https://github.com/MatteoL-W/)
 
 ## Installation
 
 ### Windows
 
 Install [cmake](https://cmake.org/download/) (>=3.8) and execute "cmake" in the root folder project (build in the folder build/ is recommended).
+You also need a kit of g++ builder (as MinGW).
 
 ### Linux
 
@@ -19,7 +20,10 @@ Execute "cmake" in the root folder project (build in the folder build/ is recomm
 
 ## Game
 
-TBD
+### Un match pour 天谷 : celui qui gagne aura son coeur et son goûter !!
+
+The .exe game can be downloaded on the [itch.io page](https://matteol-w.itch.io/un-match-pour-celui-qui-gagne-aura-son-coeur-et-son-goter)
+This is a 2-player turn-based football game.
 
 ## Event
 
