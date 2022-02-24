@@ -1,6 +1,8 @@
 # GameJam Color project (18 - 19 febr.)
 ### Made in 48h by [Yaëlle Saralegui-Tran](https://github.com/yaelleainhoa) and [Mattéo Leclercq](https://github.com/MatteoL-W/)
 
+![Illustration](https://matteo-leclercq.fr/uploads/thumb/square-format-6212bfe09a120.png)
+
 ## Installation
 
 ### Windows
